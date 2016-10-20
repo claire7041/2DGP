@@ -128,7 +128,6 @@ class Cookie:
         self.jump_time = 0
         self.jumpnum = 0
         self.jump_cnt = 0
-        self.slide_time = 0
         self.slidenum = 0
         self.slide_cnt = 0
         if (game_framework.mychar == 0):
@@ -170,14 +169,10 @@ class Cookie:
                     self.y = 150
                     self.jump_time = 0
                     self.jump_cnt = 0
-
-            if (self.slide_time > 0 or self.y < 150):
-                self.height += 2
+            elif (self.slide_cnt == 1 or self.y < 150):
                 self.y = 120
-                self.slide_time -= 1
-                if(self.slide_time == 0):
-                    self.y = 150
-                    self.slide_cnt = 0
+            elif(self.jump_time == 0 or self.slide_cnt == 0):
+                self.y = 150
 
             self.frame = (self.frame + 1) % 6
         elif(background.finish == 2):
@@ -193,7 +188,7 @@ class Cookie:
                         self.jump1.clip_draw(0, 0, 75, 100, self.x, self.y)
                     else:
                         self.jump2.clip_draw(0, 0, 75, 100, self.x, self.y)
-                elif(self.slide_time > 0):
+                elif(self.slide_cnt == 1):
                     self.slide1.clip_draw(0, 0, 90, 65, self.x, self.y)
                 else:
                     self.image.clip_draw(self.frame * 75, 0, 75, 100, self.x, self.y)
@@ -210,7 +205,7 @@ class Cookie:
                         self.jump1.clip_draw(230, 0, 115, 125, self.x, self.y)
                     else:
                         self.jump1.clip_draw(345, 0, 115, 125, self.x, self.y)
-                elif(self.slide_time > 0):
+                elif(self.slide_cnt > 0):
                     if (self.slidenum == 0):
                         self.slide1.clip_draw(0, 0, 115, 125, self.x, self.y + 15)
                     elif (self.slidenum == 1):
@@ -233,9 +228,8 @@ class Cookie:
 
 
     def slide(self):
-        if(self.slide_cnt < 1 and self.jump_cnt == 0):
-            self.slide_cnt += 1
-            self.slide_time = 10
+        if(self.slide_cnt == 0 and self.jump_cnt == 0):
+            self.slide_cnt = 1
             self.slidenum = random.randint(0, 3)
 
 
@@ -344,13 +338,18 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.change_state(interface_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            cookie.jump()
-            pet.jump()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_DOWN:
-            cookie.slide()
+        if event.type == SDL_KEYDOWN:
+            if event.key == SDLK_ESCAPE:
+                game_framework.change_state(interface_state)
+            elif event.key == SDLK_SPACE:
+                cookie.jump()
+                pet.jump()
+            elif event.key == SDLK_DOWN:
+                cookie.slide()
+        elif event.type == SDL_KEYUP:
+            if cookie.slide_cnt == 1:
+                cookie.slide_cnt = 0
+                cookie.y = 150
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, 600 - event.y
             if (background.finish == 1 and  x >= 295 and x <= 495 and y >= 122 and y <= 180):
