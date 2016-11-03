@@ -17,6 +17,7 @@ font = None
 
 class Background:
     def __init__(self):
+        self.total_frames += 1.0
         self.x, self.y = 400, 300
         self.hpBar = 700
         self.HpTime = 0
@@ -360,6 +361,18 @@ def handle_events():
                 game_framework.change_state(interface_state)
 
 
+current_time = 0.0
+
+
+def get_frame_time():
+
+    global current_time
+
+    frame_time = get_time() - current_time
+    current_time += frame_time
+    return frame_time
+
+
 def update():
     coin.cookiePos = cookie.y
     background.update()
@@ -367,6 +380,7 @@ def update():
         cookie.update()
         pet.update()
         coin.update()
+
 
 
 def draw():
