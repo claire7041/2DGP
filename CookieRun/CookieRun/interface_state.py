@@ -1,5 +1,6 @@
 import game_framework
 import main_state
+import json
 from pico2d import *
 
 name = "InterfaceState"
@@ -122,6 +123,10 @@ def handle_events():
                     elif(x >= 630 and x <= 740 and y >= 180 and y <= 230):      # 펫 선택
                         click = 2
                     elif(x >= 500 and x <= 760 and y >= 60 and y <= 140):       # 게임시작
+                        player_data = [{"Cookie": cookie.frame, "Pet": pet.frame}]
+                        f = open('cookie_data.txt', 'w')
+                        json.dump(player_data, f)
+                        f.close()
                         game_framework.change_state(main_state)
                 else:
                     if(x >= 750 and x <= 780 and y >= 450 and y <= 480):        # 선택창 나가기

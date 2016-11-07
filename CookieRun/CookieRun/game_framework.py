@@ -7,8 +7,6 @@ class GameState:
         self.handle_events = state.handle_events
         self.update = state.update
         self.draw = state.draw
-        self.mychar = 0
-        self.mypet = 0
 
 
 class TestGameState:

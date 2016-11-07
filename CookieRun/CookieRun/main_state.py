@@ -17,7 +17,6 @@ font = None
 
 class Background:
     def __init__(self):
-        self.total_frames += 1.0
         self.x, self.y = 400, 300
         self.hpBar = 700
         self.HpTime = 0
@@ -131,20 +130,21 @@ class Cookie:
         self.jump_cnt = 0
         self.slidenum = 0
         self.slide_cnt = 0
-        if (game_framework.mychar == 0):
+        self.mychar = player_data[0]["Cookie"]
+        if (self.mychar == 0):
             self.image = load_image('cookie_run.png')
             self.jump1 = load_image('cookie_run_jump.png')
             self.jump2 = load_image('cookie_run_jump2.png')
             self.slide1 = load_image('cookie_run_slide.png')
             self.die = load_image('cookie_die.png')
             self.crush = load_image('cookie_crush.png')
-        elif (game_framework.mychar == 1):
+        elif (self.mychar == 1):
             self.image = load_image('pink_run.png')
             self.jump1 = load_image('pink_jump.png')
             self.slide1 = load_image('pink_slide.png')
             self.die = load_image('pink_die.png')
             self.crush = load_image('pink_crush.png')
-        elif(game_framework.mychar == 2):
+        elif(self.mychar == 2):
             self.image = load_image('moon_run.png')
             self.jump1 = load_image('moon_jump.png')
             self.slide1 = load_image('moon_slide.png')
@@ -182,7 +182,7 @@ class Cookie:
 
 
     def draw(self):
-        if (game_framework.mychar == 0):
+        if (self.mychar == 0):
             if(background.finish == 0):
                 if(self.jump_time > 0):
                     if(self.jumpnum == 1 or self.jumpnum == 3):
@@ -242,12 +242,13 @@ class Pet:
         self.dir = 1
         self.jump_time = 0
         self.jump_cnt = 0
+        self.mypet = player_data[0]["Pet"]
 
-        if (game_framework.mypet == 0):
+        if (self.mypet == 0):
             self.image = load_image('flower.png')
-        elif (game_framework.mypet == 1):
+        elif (self.mypet == 1):
             self.image2 = load_image('ghost.png')
-        elif (game_framework.mypet == 2):
+        elif (self.mypet == 2):
             self.image3 = load_image('star.png')
 
     def update(self):
@@ -270,11 +271,11 @@ class Pet:
             self.frame = (self.frame + 1) % 7
 
     def draw(self):
-        if (game_framework.mypet == 0):
+        if (self.mypet == 0):
             self.image.clip_draw(self.frame * 70, 0, 70, 100, self.x, self.y)
-        elif (game_framework.mypet == 1):
+        elif (self.mypet == 1):
             self.image2.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
-        elif (game_framework.mypet == 2):
+        elif (self.mypet == 2):
             self.image3.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
 
     def jump(self):
@@ -311,11 +312,18 @@ class Coin:
 
 
 def enter():
-    global cookie, background, pet, coin
+    global cookie, background, pet, coin, player_data
     background = Background()
+    f = open('data_file.txt', 'r')
+    player_data = json.load(f)
+    f.close()
     cookie = Cookie()
     pet = Pet()
     coin = Coin()
+
+
+
+
 
 def exit():
     global cookie, background, pet, coin
@@ -361,17 +369,6 @@ def handle_events():
                 game_framework.change_state(interface_state)
 
 
-current_time = 0.0
-
-
-def get_frame_time():
-
-    global current_time
-
-    frame_time = get_time() - current_time
-    current_time += frame_time
-    return frame_time
-
 
 def update():
     coin.cookiePos = cookie.y
@@ -380,7 +377,6 @@ def update():
         cookie.update()
         pet.update()
         coin.update()
-
 
 
 def draw():
