@@ -130,7 +130,7 @@ class Cookie:
         self.jump_cnt = 0
         self.slidenum = 0
         self.slide_cnt = 0
-        self.mychar = player_data[0]["Cookie"]
+        self.mychar = 0
         if (self.mychar == 0):
             self.image = load_image('cookie_run.png')
             self.jump1 = load_image('cookie_run_jump.png')
@@ -242,7 +242,7 @@ class Pet:
         self.dir = 1
         self.jump_time = 0
         self.jump_cnt = 0
-        self.mypet = player_data[0]["Pet"]
+        self.mypet = 0
 
         if (self.mypet == 0):
             self.image = load_image('flower.png')
@@ -320,8 +320,6 @@ def enter():
     cookie = Cookie()
     pet = Pet()
     coin = Coin()
-
-
 
 
 
