@@ -19,6 +19,7 @@ class PetChoice:
         self.x, self.y = 90, 380
         self.choice = 0
         self.frame = 0
+        self.speed = 15
         self.image = load_image('mypetChoice.png')
         self.blue = load_image('choose.png')
         self.exit = load_image('exit.png')
@@ -43,6 +44,7 @@ class CookieChoice:
         self.x, self.y = 190, 280
         self.choice = 0
         self.frame = 0
+        self.Hp = 700
         self.image = load_image('cookieChoice.png')
         self.blue = load_image('choose.png')
         self.exit = load_image('exit.png')
@@ -84,7 +86,7 @@ def exit():
 
 
 def handle_events():
-    global x, y, click, choose
+    global x, y, click, choose, player_data
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -116,17 +118,21 @@ def handle_events():
                     else:
                         cookie.choice, pet.choice = 0, 0
 
-            elif(event.type , event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
+            elif(event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
                 if click == 0:
                     if(x >= 620 and x <= 750 and y >= 250 and y <= 300):        # 캐릭터 선택
                         click = 1
                     elif(x >= 630 and x <= 740 and y >= 180 and y <= 230):      # 펫 선택
                         click = 2
                     elif(x >= 500 and x <= 760 and y >= 60 and y <= 140):       # 게임시작
-                        player_data = [{"Cookie": cookie.frame, "Pet": pet.frame}]
+                        player_data = [
+                            {"Cookie": cookie.frame, "Pet": pet.frame, "Hp": cookie.Hp, "Speed": pet.speed}
+                        ]
+
                         f = open('cookie_data.txt', 'w')
                         json.dump(player_data, f)
                         f.close()
+
                         game_framework.change_state(main_state)
                 else:
                     if(x >= 750 and x <= 780 and y >= 450 and y <= 480):        # 선택창 나가기
@@ -135,18 +141,26 @@ def handle_events():
                     elif(x >= 300 and x <= 460 and y >= 170 and y <= 220):      # 캐릭터 바꾸기 (프레임 1, 2, 3)
                         if click == 1:
                             cookie.frame = 0
+                            cookie.Hp = 650
                         elif click == 2:
                             pet.frame = 0
+                            pet.speed = 15
                     elif(x > 460 and x <= 620 and y >= 170 and y <= 220):
                         if click == 1:
                             cookie.frame = 1
+                            cookie.Hp = 700
                         elif click == 2:
                             pet.frame = 1
+                            pet.speed = 10
                     elif (x > 620 and x <= 780 and y >= 170 and y <= 220):
                         if click == 1:
                             cookie.frame = 2
+                            cookie.Hp = 700
                         elif click == 2:
                             pet.frame = 2
+                            pet.speed = 10
+
+
 
 x, y, click, choose = 0, 0, 0, 0
 
@@ -173,8 +187,6 @@ def draw():
 
 def update():
     delay(0.001)
-    game_framework.mypet = pet.frame
-    game_framework.mychar = cookie.frame
 
 
 def pause():

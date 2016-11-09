@@ -18,12 +18,17 @@ font = None
 class Background:
     def __init__(self):
         self.x, self.y = 400, 300
-        self.hpBar = 700
+        self.hpBar = player_data[0]['Hp']
+        self.hpF = player_data[0]['Hp']
+        self.revive = 1
+        self.hpC = 52
         self.HpTime = 0
+        self.HpCnt = 0
         self.road = 0
         self.finish = 0
         self.finishCnt = 0
         self.result = 0
+        self.goSpeed = player_data[0]['Speed']
         self.speed = 3
         self.numFrame = 0
         self.numFrame1 = 0
@@ -47,21 +52,43 @@ class Background:
         self.mycoin = load_image('coin2.png')
 
     def update(self):
-        if(self.hpBar < 50):
-            self.finish = 2
-        else:
+        if(self.hpF == 700 and self.hpBar < 50 and self.HpCnt == 0):
+            if(self.revive == 1 and player_data[0]['Pet'] == 2):
+                self.revive -= 1
+                self.speed = 1
+                self.HpCnt = 50
+                pet.frame = 0
+            else:
+                self.finish = 2
+        elif(self.hpF == 650 and self.hpBar < 15and self.HpCnt == 0):
+            if (self.revive == 1 and player_data[0]['Pet'] == 2):
+                self.revive -= 1
+                self.speed = 1
+                self.HpCnt = 50
+                pet.frame = 0
+            else:
+                self.finish = 2
+        if(self.finish != 2 and self.HpCnt == 0):
             self.road += 10
-            self.x -= 10
+            self.x -= self.goSpeed
             self.hpBar -= self.speed
             self.HpTime += self.speed
-        if(self.road % 500 == 0):
-            self.speed += 1
-        if(self.x <= - 400 and self.finish == 0):
-            self.x = 400
-        if(self.finish == 2):
-            self.finishCnt += 1
-            if(self.finishCnt > 20):
-                self.finish = 1
+            if(self.hpBar < 500 and self.hpBar > 450):
+                self.hpC += 1
+
+        if(self.HpCnt == 0):
+            if(self.road % 500 == 0):
+                self.speed += 1
+            if(self.x <= - 400 and self.finish == 0):
+                self.x = 400
+            if(self.finish == 2):
+                self.finishCnt += 1
+                if(self.finishCnt > 20):
+                    self.finish = 1
+        elif(self.HpCnt > 0):
+            self.HpCnt -= 1
+            self.hpBar += 4
+            self.HpTime -= 4
 
         self.numFrame1 = coin.cnt % 10
         self.numFrame2 = coin.cnt // 10
@@ -74,9 +101,14 @@ class Background:
         self.image2.clip_draw(0, 0, 800, 600, self.x + 800, self.y)
         self.image3.clip_draw(0, 0, 800, 600, self.x, self.y)
         self.image3.clip_draw(0, 0, 800, 600, self.x + 800, self.y)
-        self.imageHpB.clip_draw(0, 0, 740, 70, 390, 536)
-        self.imageHp.clip_draw(0, 0, self.hpBar, 70, 380 - (self.HpTime / 2), 537)
-        self.imageHp2.clip_draw(0, 0, 30, 70, 724 - self.HpTime, 535)
+        if(self.hpF == 700):
+            self.imageHpB.clip_draw(0, 0, self.hpF + 20, 70, self.hpF - 310, 536)
+            self.imageHp.clip_draw(0, 0, self.hpBar, 70, 380 - (self.HpTime / 2), 537)
+            self.imageHp2.clip_draw(0, 0, 30, 70, self.hpF + 25 - self.HpTime, 535)
+        elif(self.hpF == 650):
+            self.imageHpB.clip_draw(0, 0, self.hpF + 20, 70, self.hpF - 260, 536)
+            self.imageHp.clip_draw(0, 0, self.hpBar + 20, 70, 380 - (self.HpTime / 2), 537)
+            self.imageHp2.clip_draw(0, 0, 30, 70, self.hpF + self.hpC - self.HpTime, 535)
         self.imageHp3.clip_draw(0, 0, 50, 70, 60, 540)
         self.Bonus.clip_draw(0, 0, 200, 50, 120, 580)
         self.scoreNumber.clip_draw(self.numFrame * 60, 0, 50, 120, 420, 560)
@@ -130,7 +162,7 @@ class Cookie:
         self.jump_cnt = 0
         self.slidenum = 0
         self.slide_cnt = 0
-        self.mychar = 0
+        self.mychar = player_data[0]['Cookie']
         if (self.mychar == 0):
             self.image = load_image('cookie_run.png')
             self.jump1 = load_image('cookie_run_jump.png')
@@ -155,7 +187,7 @@ class Cookie:
 
     def update(self):
         delay(0.05)
-        if(background.finish == 0):
+        if(background.finish == 0 and background.HpCnt == 0):
             if(self.jump_time > 0 or self.y > 150):
                 if (self.jump_time < 11 and self.y > 150):
                     self.dir = -1
@@ -191,9 +223,11 @@ class Cookie:
                         self.jump2.clip_draw(0, 0, 75, 100, self.x, self.y)
                 elif(self.slide_cnt == 1):
                     self.slide1.clip_draw(0, 0, 90, 65, self.x, self.y)
+                elif (background.HpCnt != 0):
+                    self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
                 else:
                     self.image.clip_draw(self.frame * 75, 0, 75, 100, self.x, self.y)
-            elif (background.finish == 2):
+            elif (background.finish == 2 or  background.HpCnt != 0):
                 self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
         else:
             if(background.finish == 0):
@@ -215,6 +249,8 @@ class Cookie:
                         self.slide1.clip_draw(230, 0, 115, 125, self.x, self.y + 15)
                     else:
                         self.slide1.clip_draw(345, 0, 115, 125, self.x, self.y + 15)
+                elif (background.HpCnt != 0):
+                    self.die.clip_draw(0, 0, 115, 125, self.x, self.y - 20)
                 else:
                     self.image.clip_draw(self.frame * 117, 0, 115, 110, self.x, self.y + 5)
             elif (background.finish == 2):
@@ -242,17 +278,22 @@ class Pet:
         self.dir = 1
         self.jump_time = 0
         self.jump_cnt = 0
-        self.mypet = 0
+        self.mypet = player_data[0]['Pet']
+        self.shield = load_image('shield.png')
+        self.shieldCnt = 0
 
         if (self.mypet == 0):
             self.image = load_image('flower.png')
         elif (self.mypet == 1):
-            self.image2 = load_image('ghost.png')
+            self.image = load_image('ghost.png')
+            self.skillimage = load_image('ghost_skill.png')
+            self.shieldCnt = 1
         elif (self.mypet == 2):
-            self.image3 = load_image('star.png')
+            self.image = load_image('star.png')
+            self.skillimage = load_image('star_skill.png')
 
     def update(self):
-        if(background.finish == 0):
+        if(background.finish == 0 and background.HpCnt == 0):
             if (self.jump_time > 0 or self.y > 200):
                 if (self.jump_time < 11 and self.y > 200):
                     self.dir = -1
@@ -267,16 +308,22 @@ class Pet:
                     self.y = 200
                     self.jump_time = 0
                     self.jump_cnt = 0
-
+            self.frame = (self.frame + 1) % 7
+        if(background.HpCnt > 0):
             self.frame = (self.frame + 1) % 7
 
+
     def draw(self):
-        if (self.mypet == 0):
-            self.image.clip_draw(self.frame * 70, 0, 70, 100, self.x, self.y)
-        elif (self.mypet == 1):
-            self.image2.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
-        elif (self.mypet == 2):
-            self.image3.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
+        if(background.HpCnt != 0):
+            self.skillimage.clip_draw(self.frame * 82, 0, 82, 100, self.x, self.y)
+        else:
+            if (self.shieldCnt != 0):
+                self.shield.clip_draw(0, 0, 150, 150, cookie.x, cookie.y)
+            if (self.mypet == 0):
+                self.image.clip_draw(self.frame * 70, 0, 70, 100, self.x, self.y)
+            elif (self.mypet == 1 or self.mypet == 2):
+                self.image.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
+
 
     def jump(self):
         if(self.jump_cnt < 2):
@@ -295,7 +342,7 @@ class Coin:
         self.image = load_image('coin.png')
 
     def update(self):
-        if(background.finish == 0):
+        if(background.finish == 0  and background.HpCnt == 0):
             self.go += 10
             for i in range(100):
                 if(self.pos[i][2] == True):
@@ -313,14 +360,14 @@ class Coin:
 
 def enter():
     global cookie, background, pet, coin, player_data
-    background = Background()
-    f = open('data_file.txt', 'r')
+    f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
     f.close()
+    background = Background()
     cookie = Cookie()
     pet = Pet()
     coin = Coin()
-
+    print("%d %d %d" % (player_data[0]['Cookie'], player_data[0]['Pet'], player_data[0]['Hp']))
 
 
 def exit():
@@ -346,9 +393,9 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         if event.type == SDL_KEYDOWN:
-            if event.key == SDLK_ESCAPE:
-                game_framework.change_state(interface_state)
-            elif event.key == SDLK_SPACE:
+            #if event.key == SDLK_ESCAPE:
+            #    game_framework.change_state(interface_state)
+            if event.key == SDLK_SPACE:
                 cookie.jump()
                 pet.jump()
             elif event.key == SDLK_DOWN:
