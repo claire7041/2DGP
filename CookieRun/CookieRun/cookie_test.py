@@ -1,7 +1,7 @@
 import json
 
 cookie_data = [
-    {"Cookie": 2, "Pet": 3, "Hp": 200}
+    {"Cookie": 2, "Pet": 3, "Hp": 200, "Skill": 10}
 ]
 
 f = open('cookie_data.txt', 'w')
