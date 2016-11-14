@@ -80,7 +80,7 @@ class Background:
                 self.hpC += 1
 
         if(self.HpCnt == 0):
-            if(self.road % 500 == 0):
+            if(self.road % 1000 == 0):
                 self.speed += 1
             if(self.x <= - 400 and self.finish == 0):
                 self.x = 400
@@ -397,7 +397,7 @@ class Coin:
                 elif (i == 8 or i == 10):
                     self.pos.append((300 + (i * 50), 250, True, 0))
                 elif (i == 9):
-                    self.pos.append((300 + (i * 50), 280, True, 0))
+                    self.pos.append((300 + (i * 50), 280, False, 1))
                 else:
                     self.pos.append((300 + (i * 50), 180, True, 0))
             elif(i >= 21 and i <= 27):
@@ -406,7 +406,7 @@ class Coin:
                 elif (i == 22 or i == 26):
                     self.pos.append((300 + (i * 50), 230, True, 0))
                 elif (i == 24):
-                    self.pos.append((300 + (i * 50), 280, True, 0))
+                    self.pos.append((300 + (i * 50), 280, False, 1))
                 else:
                     self.pos.append((300 + (i * 50), 190, True, 0))
             elif(i >= 33 and i <= 37):
@@ -449,9 +449,13 @@ class Jelly:
         #        else:
         #            self.pos.append((300 + (i * 50), 150, True, 0))
         for i in range(1000):
-            if (i >= 6 and i <= 12):
+            if (i == 9):
+                self.pos.append((300 + (i * 50), 280, True, 1))
+            elif (i == 24):
+                self.pos.append((300 + (i * 50), 280, True, 1))
+            elif (i >= 6 and i <= 12 and i != 9):
                 self.pos.append((300 + (i * 50), 150, False, 0))
-            elif(i >= 21 and i <= 27):
+            elif(i >= 21 and i <= 27 and i != 24):
                 self.pos.append((300 + (i * 50), 150, False, 0))
             elif(i >= 33 and i <= 37):
                 self.pos.append((300 + (i * 50), 150, False, 0))
@@ -462,29 +466,41 @@ class Jelly:
         self.go = 0
         self.image = load_image('Jelly.png')
         self.image2 = load_image('Jelly2.png')
+        self.heart = load_image('heart.png')
 
     def update(self):
        if(background.finish == 0  and background.HpCnt == 0):
            self.go += 10
            for i in range(1000):
                if(self.pos[i][2] == True):
-                   self.pos[i] = (self.pos[i][0], self.pos[i][1], True, 0)
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], True, self.pos[i][3])
                if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 20) <= self.pos[i][1] and (cookie.y + 150) >= self.pos[i][1] and self.pos[i][2] == True):
-                   self.pos[i] = (self.pos[i][0], self.pos[i][1], False, 0)
-                   self.cnt += 1
+                   if(self.pos[i][3] == 1):
+                       background.hpBar += 50
+                       background.HpTime -= 50
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
+                   if (background.hpBar > 400):
+                       self.cnt += 1
+                   else:
+                       self.cnt += 2
 
     def draw(self):
         for i in range(1000):
             if(self.pos[i][2] == True):
-                if(background.hpBar > 400):
-                    self.image2.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+                if (self.pos[i][3] == 1):
+                    self.heart.clip_draw(0, 0, 44, 53, self.pos[i][0] - self.go, self.pos[i][1])
                 else:
-                    self.image.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+                    if(background.hpBar > 400):
+                        self.image2.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+                    else:
+                        self.image.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
 
 
 class Obstacle:
     def __init__(self):
         self.go = 0
+        self.change = 1
+        self.change2 = 0
         for obstacle in obstacle_data:
             if (obstacle['Type'] == 1):
                 self.imageOb1 = load_image('ob1_Fork.png')
@@ -510,6 +526,24 @@ class Obstacle:
         if(background.finish == 0  and background.HpCnt == 0):
             self.go += 10
             for obstacle in obstacle_data:
+                if(obstacle['Type'] == 9):
+                    if(self.change == 1):
+                        obstacle['y'] -= 1
+                    else:
+                        obstacle['y'] += 1
+                    if(obstacle['y'] > 127):
+                        self.change = 1
+                    elif(obstacle['y'] < 112):
+                        self.change = 0
+                if (obstacle['Type'] == 2):
+                    if (self.change2 == 1):
+                        obstacle['y'] -= 5
+                    else:
+                        obstacle['y'] += 5
+                    if (obstacle['y'] == 360):
+                        self.change2 = 1
+                    elif (obstacle['y'] == 340):
+                        self.change2 = 0
                 if (obstacle['x'] - self.go >= 100 and obstacle['x'] - self.go <= 195 and (cookie.y - 30) <= obstacle['y'] and (cookie.y + 200) >= obstacle['y'] and obstacle['Crash'] == True):
                     obstacle['Crash'] = False
                     if(pet.shieldCnt != 0):
@@ -548,9 +582,9 @@ def enter():
     obstacle_data = [
         {"x": 1100, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
         {"x": 1200, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
-        {"x": 2400, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
-        {"x": 2500, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
-        {"x": 2600, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2400, "y": 340, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2500, "y": 340, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2600, "y": 340, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
         {"x": 3000, "y": 125, "Type": 3, "Size_x": 50, "Size_y": 60, "Crash": True},
         {"x": 1400, "y": 125, "Type": 4, "Size_x": 34, "Size_y": 50, "Crash": True},
         {"x": 1500, "y": 145, "Type": 5, "Size_x": 42, "Size_y": 94, "Crash": True},
@@ -647,6 +681,7 @@ def draw():
         coin.draw()
         jelly.draw()
         pet.draw()
-        cookie.draw()
         obs.draw()
+        cookie.draw()
+
     update_canvas()
