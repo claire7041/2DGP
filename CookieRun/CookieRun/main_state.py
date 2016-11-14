@@ -30,7 +30,10 @@ class Background:
         self.result = 0
         self.goSpeed = player_data[0]['Speed']
         self.speed = 3
-        self.numFrame = 0
+        self.scoreFrame1 = 0
+        self.scoreFrame2 = 0
+        self.scoreFrame3 = 0
+        self.scoreFrame4 = 0
         self.numFrame1 = 0
         self.numFrame2 = 0
         self.numFrame3 = 0
@@ -95,6 +98,10 @@ class Background:
         self.numFrame3 = coin.cnt // 100
         self.numFrame4 = coin.cnt // 1000
 
+        self.scoreFrame1 = (jelly.cnt) % 10
+        self.scoreFrame2 = (jelly.cnt) // 10
+        self.scoreFrame3 = (jelly.cnt) // 100
+        self.scoreFrame4 = (jelly.cnt) // 1000
 
     def draw(self):
         self.image.clip_draw(0, 0, 800, 600, self.x, self.y)
@@ -111,7 +118,21 @@ class Background:
             self.imageHp2.clip_draw(0, 0, 30, 70, self.hpF + self.hpC - self.HpTime, 535)
         self.imageHp3.clip_draw(0, 0, 50, 70, 60, 540)
         self.Bonus.clip_draw(0, 0, 200, 50, 120, 580)
-        self.scoreNumber.clip_draw(self.numFrame * 60, 0, 50, 120, 420, 560)
+
+        if ((jelly.cnt) < 10):
+            self.scoreNumber.clip_draw(self.scoreFrame1 * 60, 0, 50, 120, 420, 560)
+        elif ((jelly.cnt) >= 10 and (jelly.cnt) < 100):
+            self.scoreNumber.clip_draw(self.scoreFrame1 * 60, 0, 50, 120, 420, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame2 * 60, 0, 50, 120, 380, 560)
+        elif ((jelly.cnt) >= 100 and (jelly.cnt) < 1000):
+            self.scoreNumber.clip_draw(self.scoreFrame1 * 60, 0, 50, 120, 420, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame2 * 60, 0, 50, 120, 380, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame3 * 60, 0, 50, 120, 340, 560)
+        else:
+            self.scoreNumber.clip_draw(self.scoreFrame1 * 60, 0, 50, 120, 420, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame2 * 60, 0, 50, 120, 380, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame3 * 60, 0, 50, 120, 340, 560)
+            self.scoreNumber.clip_draw(self.scoreFrame4 * 60, 0, 50, 120, 300, 560)
 
         if(coin.cnt < 10):
             self.Number.clip_draw(self.numFrame1 * 40, 0, 40, 100, 760, 575)
@@ -148,6 +169,21 @@ class Background:
                 self.ResultNumber.clip_draw(self.numFrame3 * 40, 0, 40, 70, 600, 263)
                 self.ResultNumber.clip_draw(self.numFrame4 * 40, 0, 40, 70, 580, 263)
 
+            if ((jelly.cnt) < 10):
+                self.ResultNumber.clip_draw(self.scoreFrame1 * 40, 0, 40, 70, 420, 343)
+            elif ((jelly.cnt) >= 10 and (jelly.cnt) < 100):
+                self.ResultNumber.clip_draw(self.scoreFrame1 * 40, 0, 40, 70, 420, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame2 * 40, 0, 40, 70, 400, 343)
+            elif ((jelly.cnt) >= 100 and (jelly.cnt) < 1000):
+                self.ResultNumber.clip_draw(self.scoreFrame1 * 40, 0, 40, 70, 420, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame2 * 40, 0, 40, 70, 400, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame3 * 40, 0, 40, 70, 380, 343)
+            else:
+                self.ResultNumber.clip_draw(self.scoreFrame1 * 40, 0, 40, 70, 420, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame2 * 40, 0, 40, 70, 400, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame3 * 40, 0, 40, 70, 380, 343)
+                self.ResultNumber.clip_draw(self.scoreFrame4 * 40, 0, 40, 70, 360, 343)
+
         self.mycoin.clip_draw(0, 0, 50, 50, 665, 575)
 
 
@@ -183,7 +219,6 @@ class Cookie:
             self.slide1 = load_image('moon_slide.png')
             self.die = load_image('moon_die.png')
             self.crush = load_image('moon_crush.png')
-
 
 
     def update(self):
@@ -344,18 +379,42 @@ class Pet:
 
 class Coin:
     def __init__(self):
-        self.cookiePos = 150
         self.pos = []
         self.cnt = 0
+        #for i in range(1000):
+        #    for obstacle in obstacle_data:
+        #        if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
+        #            if(obstacle['y'] < 300):
+        #                self.pos.append((300 + (i * 50), obstacle['y'] + 100, True, 0))
+        #            else:
+        #                self.pos.append((300 + (i * 50), 150, False, 0))
+        #        else:
+        #            self.pos.append((300 + (i * 50), 150, False, 0))
         for i in range(1000):
-            for obstacle in obstacle_data:
-                if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
-                    if(obstacle['y'] > 300):
-                        self.pos.append((300 + (i * 50), 150, True, 0))
-                    else:
-                        self.pos.append((300 + (i * 50), obstacle['y'] + 100, True, 0))
+            if (i >= 6 and i <= 12):
+                if(i == 7 or i == 11):
+                    self.pos.append((300 + (i * 50), 230, True, 0))
+                elif (i == 8 or i == 10):
+                    self.pos.append((300 + (i * 50), 250, True, 0))
+                elif (i == 9):
+                    self.pos.append((300 + (i * 50), 280, True, 0))
                 else:
-                    self.pos.append((300 + (i * 50), 150, True, 0))
+                    self.pos.append((300 + (i * 50), 180, True, 0))
+            elif(i >= 21 and i <= 27):
+                if (i == 23 or i == 25):
+                    self.pos.append((300 + (i * 50), 250, True, 0))
+                elif (i == 22 or i == 26):
+                    self.pos.append((300 + (i * 50), 230, True, 0))
+                elif (i == 24):
+                    self.pos.append((300 + (i * 50), 280, True, 0))
+                else:
+                    self.pos.append((300 + (i * 50), 190, True, 0))
+            elif(i >= 33 and i <= 37):
+                self.pos.append((300 + (i * 50), 190, True, 0))
+            elif(i >= 54 and i <= 59):
+                self.pos.append((300 + (i * 50), 220, True, 0))
+            else:
+                self.pos.append((300 + (i * 50), 150, False, 0))
 
         self.go = 0
         self.image = load_image('coin.png')
@@ -366,14 +425,62 @@ class Coin:
            for i in range(1000):
                if(self.pos[i][2] == True):
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
-               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (self.cookiePos - 20) <= self.pos[i][1] and (self.cookiePos + 150) >= self.pos[i][1] and self.pos[i][2] == True):
-                   self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
-                   self.cnt += 1
+               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 20) <= self.pos[i][1] and (cookie.y + 150) >= self.pos[i][1] and self.pos[i][2] == True):
+                   if(self.pos[i][2] == True):
+                       self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
+                       self.cnt += 1
 
     def draw(self):
         for i in range(1000):
             if(self.pos[i][2] == True):
                 self.image.clip_draw(self.pos[i][3] * 44, 0, 44, 53, self.pos[i][0] - self.go, self.pos[i][1])
+
+class Jelly:
+    def __init__(self):
+        self.pos = []
+        self.cnt = 0
+        #for i in range(1000):
+        #    for obstacle in obstacle_data:
+        #        if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
+        #            if(obstacle['y'] < 300):
+        #                self.pos.append((300 + (i * 50), obstacle['y'] + 100, False, 0))
+        #            else:
+        #                self.pos.append((300 + (i * 50), 150, False, 0))
+        #        else:
+        #            self.pos.append((300 + (i * 50), 150, True, 0))
+        for i in range(1000):
+            if (i >= 6 and i <= 12):
+                self.pos.append((300 + (i * 50), 150, False, 0))
+            elif(i >= 21 and i <= 27):
+                self.pos.append((300 + (i * 50), 150, False, 0))
+            elif(i >= 33 and i <= 37):
+                self.pos.append((300 + (i * 50), 150, False, 0))
+            elif(i >= 54 and i <= 59):
+                self.pos.append((300 + (i * 50), 150, False, 0))
+            else:
+                self.pos.append((300 + (i * 50), 150, True, 0))
+        self.go = 0
+        self.image = load_image('Jelly.png')
+        self.image2 = load_image('Jelly2.png')
+
+    def update(self):
+       if(background.finish == 0  and background.HpCnt == 0):
+           self.go += 10
+           for i in range(1000):
+               if(self.pos[i][2] == True):
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], True, 0)
+               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 20) <= self.pos[i][1] and (cookie.y + 150) >= self.pos[i][1] and self.pos[i][2] == True):
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], False, 0)
+                   self.cnt += 1
+
+    def draw(self):
+        for i in range(1000):
+            if(self.pos[i][2] == True):
+                if(background.hpBar > 400):
+                    self.image2.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+                else:
+                    self.image.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+
 
 class Obstacle:
     def __init__(self):
@@ -434,16 +541,16 @@ class Obstacle:
 
 
 def enter():
-    global cookie, background, pet, coin, obs, player_data, obstacle_data
+    global cookie, background, pet, coin, jelly, obs, player_data, obstacle_data
     f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
     f.close()
     obstacle_data = [
         {"x": 1100, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
         {"x": 1200, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
-        {"x": 2400, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
-        {"x": 2500, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
-        {"x": 2600, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2400, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2500, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2600, "y": 330, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
         {"x": 3000, "y": 125, "Type": 3, "Size_x": 50, "Size_y": 60, "Crash": True},
         {"x": 1400, "y": 125, "Type": 4, "Size_x": 34, "Size_y": 50, "Crash": True},
         {"x": 1500, "y": 145, "Type": 5, "Size_x": 42, "Size_y": 94, "Crash": True},
@@ -470,15 +577,17 @@ def enter():
     cookie = Cookie()
     pet = Pet()
     coin = Coin()
+    jelly = Jelly()
     obs = Obstacle()
 
 
 def exit():
-    global cookie, background, pet, coin, obs
+    global cookie, background, pet, coin, obs, jelly
     del(cookie)
     del(background)
     del(pet)
     del(coin)
+    del(jelly)
     del(obs)
 
 
@@ -526,6 +635,7 @@ def update():
         cookie.update()
         pet.update()
         coin.update()
+        jelly.update()
         obs.update()
 
 
@@ -535,6 +645,7 @@ def draw():
     background.draw()
     if(background.finish != 1):
         coin.draw()
+        jelly.draw()
         pet.draw()
         cookie.draw()
         obs.draw()
