@@ -60,7 +60,7 @@ class Background:
                 pet.frame = 0
             else:
                 self.finish = 2
-        elif(self.hpF == 650 and self.hpBar < 15and self.HpCnt == 0):
+        elif(self.hpF == 650 and self.hpBar < 15 and self.HpCnt == 0):
             if (self.revive == 1 and player_data[0]['Pet'] == 2):
                 self.revive -= 1
                 self.speed = 1
@@ -157,6 +157,7 @@ class Cookie:
         self.frame = 0
         self.height = 0
         self.dir = 1
+        self.crushCnt = 0
         self.jump_time = 0
         self.jumpnum = 0
         self.jump_cnt = 0
@@ -188,26 +189,30 @@ class Cookie:
     def update(self):
         delay(0.05)
         if(background.finish == 0 and background.HpCnt == 0):
-            if(self.jump_time > 0 or self.y > 150):
-                if (self.jump_time < 11 and self.y > 150):
-                    self.dir = -1
-                elif (self.jump_time == 11):
-                    self.height = 0
-                elif (self.jump_time > 11):
-                    self.dir = 1
-                self.height += 2
-                self.y += self.height * self.dir
-                self.jump_time -= 1
-                if(self.y <= 150):
+            if(self.crushCnt == 0):
+                if(self.jump_time > 0 or self.y > 150):
+                    if (self.jump_time < 11 and self.y > 150):
+                        self.dir = -1
+                    elif (self.jump_time == 11):
+                        self.height = 0
+                    elif (self.jump_time > 11):
+                        self.dir = 1
+                    self.height += 2
+                    self.y += self.height * self.dir
+                    self.jump_time -= 1
+                    if(self.y <= 150):
+                        self.y = 150
+                        self.jump_time = 0
+                        self.jump_cnt = 0
+                elif (self.slide_cnt == 1 or self.y < 150):
+                    self.y = 120
+                elif(self.jump_time == 0 or self.slide_cnt == 0):
                     self.y = 150
-                    self.jump_time = 0
-                    self.jump_cnt = 0
-            elif (self.slide_cnt == 1 or self.y < 150):
-                self.y = 120
-            elif(self.jump_time == 0 or self.slide_cnt == 0):
-                self.y = 150
-
-            self.frame = (self.frame + 1) % 6
+                self.frame = (self.frame + 1) % 6
+            else:
+                self.crushCnt -= 1
+                self.jump_time = 0
+                self.slide_cnt = 0
         elif(background.finish == 2):
             if(self.y > 150):
                 self.y -= 15
@@ -216,43 +221,49 @@ class Cookie:
     def draw(self):
         if (self.mychar == 0):
             if(background.finish == 0):
-                if(self.jump_time > 0):
-                    if(self.jumpnum == 1 or self.jumpnum == 3):
-                        self.jump1.clip_draw(0, 0, 75, 100, self.x, self.y)
-                    else:
-                        self.jump2.clip_draw(0, 0, 75, 100, self.x, self.y)
-                elif(self.slide_cnt == 1):
-                    self.slide1.clip_draw(0, 0, 90, 65, self.x, self.y)
-                elif (background.HpCnt != 0):
-                    self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
+                if(self.crushCnt != 0):
+                    self.crush.clip_draw(0, 0, 100, 150, self.x, self.y)
                 else:
-                    self.image.clip_draw(self.frame * 75, 0, 75, 100, self.x, self.y)
+                    if(self.jump_time > 0):
+                        if(self.jumpnum == 1 or self.jumpnum == 3):
+                            self.jump1.clip_draw(0, 0, 75, 100, self.x, self.y)
+                        else:
+                            self.jump2.clip_draw(0, 0, 75, 100, self.x, self.y)
+                    elif(self.slide_cnt == 1):
+                        self.slide1.clip_draw(0, 0, 90, 65, self.x, self.y)
+                    elif (background.HpCnt != 0):
+                        self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
+                    else:
+                        self.image.clip_draw(self.frame * 75, 0, 75, 100, self.x, self.y)
             elif (background.finish == 2 or  background.HpCnt != 0):
                 self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
         else:
             if(background.finish == 0):
-                if (self.jump_time > 0):
-                    if (self.jumpnum == 0):
-                         self.jump1.clip_draw(0, 0, 115, 125, self.x, self.y)
-                    elif(self.jumpnum == 1):
-                        self.jump1.clip_draw(115, 0, 115, 125, self.x, self.y)
-                    elif (self.jumpnum == 2):
-                        self.jump1.clip_draw(230, 0, 115, 125, self.x, self.y)
-                    else:
-                        self.jump1.clip_draw(345, 0, 115, 125, self.x, self.y)
-                elif(self.slide_cnt > 0):
-                    if (self.slidenum == 0):
-                        self.slide1.clip_draw(0, 0, 115, 125, self.x, self.y + 15)
-                    elif (self.slidenum == 1):
-                        self.slide1.clip_draw(115, 0, 115, 125, self.x, self.y + 15)
-                    elif (self.slidenum == 2):
-                        self.slide1.clip_draw(230, 0, 115, 125, self.x, self.y + 15)
-                    else:
-                        self.slide1.clip_draw(345, 0, 115, 125, self.x, self.y + 15)
-                elif (background.HpCnt != 0):
-                    self.die.clip_draw(0, 0, 115, 125, self.x, self.y - 20)
+                if (self.crushCnt != 0):
+                    self.crush.clip_draw(0, 0, 115, 125, self.x, self.y)
                 else:
-                    self.image.clip_draw(self.frame * 117, 0, 115, 110, self.x, self.y + 5)
+                    if (self.jump_time > 0):
+                        if (self.jumpnum == 0):
+                             self.jump1.clip_draw(0, 0, 115, 125, self.x, self.y)
+                        elif(self.jumpnum == 1):
+                            self.jump1.clip_draw(115, 0, 115, 125, self.x, self.y)
+                        elif (self.jumpnum == 2):
+                            self.jump1.clip_draw(230, 0, 115, 125, self.x, self.y)
+                        else:
+                            self.jump1.clip_draw(345, 0, 115, 125, self.x, self.y)
+                    elif(self.slide_cnt > 0):
+                        if (self.slidenum == 0):
+                            self.slide1.clip_draw(0, 0, 115, 125, self.x, self.y + 15)
+                        elif (self.slidenum == 1):
+                            self.slide1.clip_draw(115, 0, 115, 125, self.x, self.y + 15)
+                        elif (self.slidenum == 2):
+                            self.slide1.clip_draw(230, 0, 115, 125, self.x, self.y + 15)
+                        else:
+                            self.slide1.clip_draw(345, 0, 115, 125, self.x, self.y + 15)
+                    elif (background.HpCnt != 0):
+                        self.die.clip_draw(0, 0, 115, 125, self.x, self.y - 20)
+                    else:
+                        self.image.clip_draw(self.frame * 117, 0, 115, 110, self.x, self.y + 5)
             elif (background.finish == 2):
                 self.die.clip_draw(0, 0, 115, 125, self.x, self.y - 20)
 
@@ -336,46 +347,139 @@ class Coin:
         self.cookiePos = 150
         self.pos = []
         self.cnt = 0
-        for i in range(100):
-            self.pos.append((500 + (i * 50), 140, True, 0))
+        for i in range(1000):
+            for obstacle in obstacle_data:
+                if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
+                    if(obstacle['y'] > 300):
+                        self.pos.append((300 + (i * 50), 150, True, 0))
+                    else:
+                        self.pos.append((300 + (i * 50), obstacle['y'] + 100, True, 0))
+                else:
+                    self.pos.append((300 + (i * 50), 150, True, 0))
+
         self.go = 0
         self.image = load_image('coin.png')
 
     def update(self):
-        if(background.finish == 0  and background.HpCnt == 0):
-            self.go += 10
-            for i in range(100):
-                if(self.pos[i][2] == True):
-                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
-                if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (self.cookiePos - 20) <= self.pos[i][1] and (self.cookiePos + 150) >= self.pos[i][1] and self.pos[i][2] == True):
-                    self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
-                    self.cnt += 1
+       if(background.finish == 0  and background.HpCnt == 0):
+           self.go += 10
+           for i in range(1000):
+               if(self.pos[i][2] == True):
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
+               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (self.cookiePos - 20) <= self.pos[i][1] and (self.cookiePos + 150) >= self.pos[i][1] and self.pos[i][2] == True):
+                   self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
+                   self.cnt += 1
 
     def draw(self):
-        for i in range(100):
+        for i in range(1000):
             if(self.pos[i][2] == True):
                 self.image.clip_draw(self.pos[i][3] * 44, 0, 44, 53, self.pos[i][0] - self.go, self.pos[i][1])
 
+class Obstacle:
+    def __init__(self):
+        self.go = 0
+        for obstacle in obstacle_data:
+            if (obstacle['Type'] == 1):
+                self.imageOb1 = load_image('ob1_Fork.png')
+            elif (obstacle['Type'] == 2):
+                self.imageOb2 = load_image('ob2_Fork.png')
+            elif (obstacle['Type'] == 3):
+                self.imageOb3 = load_image('ob3_Fork.png')
+            elif (obstacle['Type'] == 4):
+                self.imageOb4 = load_image('ob4_thorn.png')
+            elif (obstacle['Type'] == 5):
+                self.imageOb5 = load_image('ob5_thorn.png')
+            elif (obstacle['Type'] == 6):
+                self.imageOb6 = load_image('ob6_thorn.png')
+            elif (obstacle['Type'] == 7):
+                self.imageOb7 = load_image('ob7_thorn.png')
+            elif (obstacle['Type'] == 8):
+                self.imageOb8 = load_image('ob8_thorn.png')
+            elif (obstacle['Type'] == 9):
+                self.imageOb9 = load_image('ob9_thorn.png')
+
+
+    def update(self):
+        if(background.finish == 0  and background.HpCnt == 0):
+            self.go += 10
+            for obstacle in obstacle_data:
+                if (obstacle['x'] - self.go >= 100 and obstacle['x'] - self.go <= 195 and (cookie.y - 30) <= obstacle['y'] and (cookie.y + 200) >= obstacle['y'] and obstacle['Crash'] == True):
+                    obstacle['Crash'] = False
+                    if(pet.shieldCnt != 0):
+                        pet.shieldCnt = 0
+                    else:
+                        background.hpBar -= 50
+                        background.HpTime += 50
+                        cookie.crushCnt = 10
+    def draw(self):
+        for obstacle in obstacle_data:
+            if(obstacle['Type'] == 1):
+                self.imageOb1.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 2):
+                self.imageOb2.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 3):
+                self.imageOb3.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 4):
+                self.imageOb4.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 5):
+                self.imageOb5.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 6):
+                self.imageOb6.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 7):
+                self.imageOb7.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 8):
+                self.imageOb8.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
+            elif (obstacle['Type'] == 9):
+                self.imageOb9.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
 
 
 def enter():
-    global cookie, background, pet, coin, player_data
+    global cookie, background, pet, coin, obs, player_data, obstacle_data
     f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
+    f.close()
+    obstacle_data = [
+        {"x": 1100, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
+        {"x": 1200, "y": 350, "Type": 1, "Size_x": 80, "Size_y": 348, "Crash": True},
+        {"x": 2400, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2500, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 2600, "y": 320, "Type": 2, "Size_x": 67, "Size_y": 241, "Crash": True},
+        {"x": 3000, "y": 125, "Type": 3, "Size_x": 50, "Size_y": 60, "Crash": True},
+        {"x": 1400, "y": 125, "Type": 4, "Size_x": 34, "Size_y": 50, "Crash": True},
+        {"x": 1500, "y": 145, "Type": 5, "Size_x": 42, "Size_y": 94, "Crash": True},
+        {"x": 1600, "y": 125, "Type": 4, "Size_x": 34, "Size_y": 50, "Crash": True},
+        {"x": 2000, "y": 125, "Type": 6, "Size_x": 30, "Size_y": 50, "Crash": True},
+        {"x": 2050, "y": 125, "Type": 6, "Size_x": 30, "Size_y": 50, "Crash": True},
+        {"x": 2100, "y": 125, "Type": 6, "Size_x": 30, "Size_y": 50, "Crash": True},
+        {"x": 3100, "y": 139, "Type": 7, "Size_x": 42, "Size_y": 78, "Crash": True},
+        {"x": 3200, "y": 128, "Type": 8, "Size_x": 50, "Size_y": 60, "Crash": True},
+        {"x": 700, "y": 122, "Type": 9, "Size_x": 50, "Size_y": 60, "Crash": True},
+        {"x": 750, "y": 122, "Type": 9, "Size_x": 50, "Size_y": 60, "Crash": True},
+        {"x": 800, "y": 122, "Type": 9, "Size_x": 50, "Size_y": 60, "Crash": True}
+
+    ]
+
+    f = open('obstacle_data.txt', 'w')
+    json.dump(obstacle_data, f)
+    f.close()
+
+    f = open('obstacle_data.txt', 'r')
+    obstacle_data = json.load(f)
     f.close()
     background = Background()
     cookie = Cookie()
     pet = Pet()
     coin = Coin()
-    print("%d %d %d" % (player_data[0]['Cookie'], player_data[0]['Pet'], player_data[0]['Hp']))
+    obs = Obstacle()
 
 
 def exit():
-    global cookie, background, pet, coin
+    global cookie, background, pet, coin, obs
     del(cookie)
     del(background)
     del(pet)
     del(coin)
+    del(obs)
 
 
 def pause():
@@ -422,6 +526,7 @@ def update():
         cookie.update()
         pet.update()
         coin.update()
+        obs.update()
 
 
 def draw():
@@ -432,4 +537,5 @@ def draw():
         coin.draw()
         pet.draw()
         cookie.draw()
+        obs.draw()
     update_canvas()
