@@ -186,6 +186,32 @@ class Background:
 
         self.mycoin.clip_draw(0, 0, 50, 50, 665, 575)
 
+class Input:
+    def __init__(self):
+        self.inputkey = load_image('input.png')
+        self.name = load_image('English.png')
+        self.cnt = 0
+        self.myname = []
+        self.x, self.y = 150, 150
+
+    def update(self):
+        pass
+
+
+    def draw(self):
+        if(background.finish == 1):
+            self.inputkey.clip_draw(0, 0, 250, 250, self.x, self.y)
+
+            if(self.cnt == 1):
+                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 640, 163)
+            elif(self.cnt == 2):
+                self.name.clip_draw(self.myname[1] * 50, 0, 50, 50, 640, 163)
+                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 610, 163)
+            elif(self.cnt == 3):
+                self.name.clip_draw(self.myname[2] * 50, 0, 50, 50, 640, 163)
+                self.name.clip_draw(self.myname[1] * 50, 0, 50, 50, 610, 163)
+                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 580, 163)
+
 
 class Cookie:
     def __init__(self):
@@ -425,7 +451,7 @@ class Coin:
            for i in range(1000):
                if(self.pos[i][2] == True):
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
-               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 20) <= self.pos[i][1] and (cookie.y + 150) >= self.pos[i][1] and self.pos[i][2] == True):
+               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 50) <= self.pos[i][1] and (cookie.y + 75) >= self.pos[i][1] and self.pos[i][2] == True):
                    if(self.pos[i][2] == True):
                        self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                        self.cnt += 1
@@ -474,7 +500,7 @@ class Jelly:
            for i in range(1000):
                if(self.pos[i][2] == True):
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, self.pos[i][3])
-               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 20) <= self.pos[i][1] and (cookie.y + 150) >= self.pos[i][1] and self.pos[i][2] == True):
+               if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 50) <= self.pos[i][1] and (cookie.y + 75) >= self.pos[i][1] and self.pos[i][2] == True):
                    if(self.pos[i][3] == 1):
                        background.hpBar += 50
                        background.HpTime -= 50
@@ -549,6 +575,7 @@ class Obstacle:
                     if(pet.shieldCnt != 0):
                         pet.shieldCnt = 0
                     else:
+                        background.x += 20
                         background.hpBar -= 50
                         background.HpTime += 50
                         cookie.crushCnt = 10
@@ -575,7 +602,7 @@ class Obstacle:
 
 
 def enter():
-    global cookie, background, pet, coin, jelly, obs, player_data, obstacle_data
+    global cookie, background, pet, coin, jelly, obs, player_data, obstacle_data, input
     f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
     f.close()
@@ -613,16 +640,18 @@ def enter():
     coin = Coin()
     jelly = Jelly()
     obs = Obstacle()
+    input = Input()
 
 
 def exit():
-    global cookie, background, pet, coin, obs, jelly
+    global cookie, background, pet, coin, obs, jelly, input
     del(cookie)
     del(background)
     del(pet)
     del(coin)
     del(jelly)
     del(obs)
+    del(input)
 
 
 def pause():
@@ -634,7 +663,7 @@ def resume():
 
 
 def handle_events():
-    global x, y, click
+    global x, y, click, ranking_data
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -653,11 +682,80 @@ def handle_events():
                 cookie.y = 150
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, 600 - event.y
-            if (background.finish == 1 and  x >= 295 and x <= 495 and y >= 122 and y <= 180):
+            if (background.finish == 1 and x >= 295 and x <= 495 and y >= 122 and y <= 180):
                 background.result = 1
             else:
                 background.result = 0
-        elif ((event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT) and  background.result == 1):
+        elif ((event.type, event.button) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT)):
+            if(background.finish == 1 and input.x <= x and x <= input.x + 250 and y >= input.y and y <= input.y + 250 and input.cnt < 3):
+                if(x >= 25 and x < 75):
+                    if (y >= 25 and y < 75):
+                        input.myname.append((20))
+                    elif (y >= 75 and y < 125):
+                        input.myname.append((15))
+                    elif (y >= 125 and y < 175):
+                        input.myname.append((10))
+                    elif (y >= 175 and y < 225):
+                        input.myname.append((5))
+                    elif (y >= 225 and y < 275):
+                        input.myname.append((0))
+                elif(x >= 75 and x < 125):
+                    if (y >= 25 and y < 75):
+                        input.myname.append((21))
+                    elif (y >= 75 and y < 125):
+                        input.myname.append((16))
+                    elif (y >= 125 and y < 175):
+                        input.myname.append((11))
+                    elif (y >= 175 and y < 225):
+                        input.myname.append((6))
+                    elif (y >= 225 and y < 275):
+                        input.myname.append((1))
+                elif(x >= 125 and x < 175):
+                    if (y >= 25 and y < 75):
+                        input.myname.append((22))
+                    elif (y >= 75 and y < 125):
+                        input.myname.append((17))
+                    elif (y >= 125 and y < 175):
+                        input.myname.append((12))
+                    elif (y >= 175 and y < 225):
+                        input.myname.append((7))
+                    elif (y >= 225 and y < 275):
+                        input.myname.append((2))
+                elif(x >= 175 and x < 225):
+                    if (y >= 25 and y < 75):
+                        input.myname.append((23))
+                    elif (y >= 75 and y < 125):
+                        input.myname.append((18))
+                    elif (y >= 125 and y < 175):
+                        input.myname.append((13))
+                    elif (y >= 175 and y < 225):
+                        input.myname.append((8))
+                    elif (y >= 225 and y < 275):
+                        input.myname.append((3))
+                elif (x >= 225 and x < 275):
+                    if (y >= 25 and y < 75):
+                        input.myname.append((24))
+                    elif (y >= 75 and y < 125):
+                        input.myname.append((19))
+                    elif (y >= 125 and y < 175):
+                        input.myname.append((14))
+                    elif (y >= 175 and y < 225):
+                        input.myname.append((9))
+                    elif (y >= 225 and y < 275):
+                        input.myname.append((4))
+                print("%d" % input.myname[input.cnt])
+                input.cnt += 1
+            if (background.result == 1):
+                f = open('ranking_data.txt', 'r')
+                ranking_data = json.load(f)
+                f.close()
+
+                ranking_data.append({"Coin": coin.cnt, "Score": jelly.cnt, "Name1": input.myname[0], "Name2": input.myname[1], "Name3": input.myname[2]})
+
+                f = open('ranking_data.txt', 'w')
+                json.dump(ranking_data, f)
+                f.close()
+
                 game_framework.change_state(interface_state)
 
 
@@ -683,5 +781,9 @@ def draw():
         pet.draw()
         obs.draw()
         cookie.draw()
+    else:
+        input.draw()
+
+
 
     update_canvas()

@@ -13,12 +13,110 @@ cookie = None
 pet = None
 charChoice = None
 petChoice = None
+rank = None
+
+class Ranking:
+    def __init__(self):
+        self.x, self.y = 580, 550
+        self.x2, self.y2 = 350, 480
+        self.coin = ranking_data[0]['Coin']
+        self.score = []
+        self.myname1 = []
+        self.myname2 = []
+        self.myname3 = []
+        self.myname1.append((ranking_data[0]['Name1']))
+        self.myname1.append((ranking_data[0]['Name2']))
+        self.myname1.append((ranking_data[0]['Name3']))
+        self.myname2.append((ranking_data[1]['Name1']))
+        self.myname2.append((ranking_data[1]['Name2']))
+        self.myname2.append((ranking_data[1]['Name3']))
+        self.myname3.append((ranking_data[2]['Name1']))
+        self.myname3.append((ranking_data[2]['Name2']))
+        self.myname3.append((ranking_data[2]['Name3']))
+
+        for i in range(3):
+            self.score.append((ranking_data[i]['Score']))
+
+        self.frame1 = 0
+        self.frame2 = 0
+        self.frame3 = 0
+        self.frame4 = 0
+        self.scoreFrame = []
+        for i in range(12):
+            self.scoreFrame.append((0))
+        self.srank = load_image('scoreRank.png')
+        self.image = load_image('myCoin.png')
+        self.Number = load_image('number.png')
+        self.ResultNumber = load_image('resultnumber.png')
+        self.name = load_image('English.png')
+
+    def update(self):
+        self.frame1 = self.coin % 10
+        self.frame2 = self.coin // 10
+        self.frame3 = self.coin // 100
+        self.frame4 = self.coin // 1000
+
+        self.scoreFrame[0] = self.score[0] % 10
+        self.scoreFrame[1] = self.score[0] // 10
+        self.scoreFrame[2] = self.score[0] // 100
+        self.scoreFrame[3] = self.score[0] // 1000
+        self.scoreFrame[4] = self.score[1] % 10
+        self.scoreFrame[5] = self.score[1] // 10
+        self.scoreFrame[6] = self.score[1] // 100
+        self.scoreFrame[7] = self.score[1] // 1000
+        self.scoreFrame[8] = self.score[2] % 10
+        self.scoreFrame[9] = self.score[2] // 10
+        self.scoreFrame[10] = self.score[2] // 100
+        self.scoreFrame[11] = self.score[2] // 1000
+
+    def draw(self):
+        self.srank.clip_draw(0, 0, 289, 185, self.x2 - 100, self.y2 - 20)
+        self.image.clip_draw(0, 0, 200, 70, self.x + 75, self.y)
+        self.image.clip_draw(0, 0, 200, 70, self.x + 75, self.y)
+        if (self.coin < 10):
+            self.Number.clip_draw(self.frame1 * 40, 0, 40, 100, self.x + 120, self.y)
+        elif (self.coin >= 10 and self.coin < 100):
+            self.Number.clip_draw(self.frame1 * 40, 0, 40, 100, self.x + 120, self.y)
+            self.Number.clip_draw(self.frame2 * 40, 0, 40, 100, self.x + 100, self.y)
+        elif (self.coin >= 100 and self.coin < 1000):
+            self.Number.clip_draw(self.frame1 * 40, 0, 40, 100, self.x + 120, self.y)
+            self.Number.clip_draw(self.frame2 * 40, 0, 40, 100, self.x + 100, self.y)
+            self.Number.clip_draw(self.frame3 * 40, 0, 40, 100, self.x + 80, self.y)
+        else:
+            self.Number.clip_draw(self.frame1 * 40, 0, 40, 100, self.x + 120, self.y)
+            self.Number.clip_draw(self.frame2 * 40, 0, 40, 100, self.x + 100, self.y)
+            self.Number.clip_draw(self.frame3 * 40, 0, 40, 100, self.x + 80, self.y)
+            self.Number.clip_draw(self.frame4 * 40, 0, 40, 100, self.x + 60, self.y)
+
+        for i in range(3):
+            self.name.clip_draw(self.myname1[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 + 10)
+        for i in range(3):
+            self.name.clip_draw(self.myname2[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 35)
+        for i in range(3):
+            self.name.clip_draw(self.myname3[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 80)
+
+        for i in range(3):
+            if (self.score[i] < 10):
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4] * 40, 0, 40, 70, self.x2, self.y2 - (i * 50))
+            elif (self.score[i] >= 10 and self.score[i] < 100):
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4] * 40, 0, 40, 70, self.x2, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 1] * 40, 0, 40, 70, self.x2 - 30, self.y2 - (i * 50))
+            elif (self.score[i] >= 100 and self.score[i] < 1000):
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4] * 40, 0, 40, 70, self.x2, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 1] * 40, 0, 40, 70, self.x2 - 30, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 2] * 40, 0, 40, 70, self.x2 - 60, self.y2 - (i * 50))
+            else:
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4] * 40, 0, 40, 70, self.x2, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 1] * 40, 0, 40, 70, self.x2 - 30, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 2] * 40, 0, 40, 70, self.x2 - 60, self.y2 - (i * 50))
+                self.ResultNumber.clip_draw(self.scoreFrame[i * 4 + 3] * 40, 0, 40, 70, self.x2 - 90, self.y2 - (i * 50))
+
 
 class PetChoice:
     def __init__(self):
-        self.x, self.y = 90, 380
+        self.x, self.y = 110, 280
         self.choice = 0
-        self.frame = 0
+        self.frame = player_data[0]['Pet']
         self.speed = 15
         self.image = load_image('mypetChoice.png')
         self.blue = load_image('choose.png')
@@ -41,10 +139,10 @@ class PetChoice:
 
 class CookieChoice:
     def __init__(self):
-        self.x, self.y = 190, 280
+        self.x, self.y = 210, 180
         self.choice = 0
-        self.frame = 0
-        self.Hp = 700
+        self.frame = player_data[0]['Cookie']
+        self.Hp = player_data[0]['Hp']
         self.image = load_image('cookieChoice.png')
         self.blue = load_image('choose.png')
         self.exit = load_image('exit.png')
@@ -63,8 +161,31 @@ class CookieChoice:
         elif (self.choice == 4):
             self.exit.clip_draw(0, 0, 50, 50, 763, 463)
 
+
+def bubble_sort(data):
+    for i in range(0, len(data)):
+        for j in range(i + 1, len(data)):
+            if (data[i]['Score'] < data[j]['Score']):
+                data[i], data[j] = data[j], data[i]
+
+def sum(data):
+    for i in range(0, len(data)):
+        for j in range(i + 1, len(data)):
+            data[i]['Coin'] += data[j]['Coin']
+
 def enter():
-    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart
+    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank, ranking_data, player_data
+    f = open('cookie_data.txt', 'r')
+    player_data = json.load(f)
+    f.close()
+
+    f = open('ranking_data.txt', 'r')
+    ranking_data = json.load(f)
+    f.close()
+
+    bubble_sort(ranking_data)
+    sum(ranking_data)
+
     charChoice = load_image('charChoice.png')
     petChoice = load_image('petChoice.png')
     image = load_image('Interface.png')
@@ -73,9 +194,10 @@ def enter():
     imagepet = load_image('Interface_pet.png')
     cookie = CookieChoice()
     pet = PetChoice()
+    rank = Ranking()
 
 def exit():
-    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart
+    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank
     del(charChoice)
     del(petChoice)
     del(image)
@@ -83,6 +205,7 @@ def exit():
     del(imagepet)
     del (imagecookie)
     del (imagestart)
+    del (rank)
 
 
 def handle_events():
@@ -174,6 +297,7 @@ def draw():
         imagecookie.draw(400, 300)
     elif (choose == 3):
         imagepet.draw(400, 300)
+    rank.draw()
 
     if (click == 1):
         charChoice.clip_draw(0, 0, 800, 600, 520, 300)
@@ -187,6 +311,7 @@ def draw():
 
 def update():
     delay(0.001)
+    rank.update()
 
 
 def pause():
