@@ -575,7 +575,7 @@ class Obstacle:
                     if(pet.shieldCnt != 0):
                         pet.shieldCnt = 0
                     else:
-                        background.x += 20
+                        background.x += 30
                         background.hpBar -= 50
                         background.HpTime += 50
                         cookie.crushCnt = 10
