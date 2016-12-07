@@ -220,11 +220,11 @@ class Cookie:
         self.height = 0
         self.dir = 1
         self.crushCnt = 0
-        self.jump_time = 0
-        self.jumpnum = 0
-        self.jump_cnt = 0
-        self.slidenum = 0
-        self.slide_cnt = 0
+        self.jumpTime = 0
+        self.jumpNum = 0
+        self.jumpCnt = 0
+        self.slideNum = 0
+        self.slideCnt = 0
         self.mychar = player_data[0]['Cookie']
         if (self.mychar == 0):
             self.image = load_image('cookie_run.png')
@@ -251,29 +251,29 @@ class Cookie:
         delay(0.05)
         if(background.finish == 0 and background.HpCnt == 0):
             if(self.crushCnt == 0):
-                if(self.jump_time > 0 or self.y > 150):
-                    if (self.jump_time < 11 and self.y > 150):
+                if(self.jumpTime > 0 or self.y > 150):
+                    if (self.jumpTime < 11 and self.y > 150):
                         self.dir = -1
-                    elif (self.jump_time == 11):
+                    elif (self.jumpTime == 11):
                         self.height = 0
-                    elif (self.jump_time > 11):
+                    elif (self.jumpTime > 11):
                         self.dir = 1
                     self.height += 2
                     self.y += self.height * self.dir
-                    self.jump_time -= 1
+                    self.jumpTime -= 1
                     if(self.y <= 150):
                         self.y = 150
-                        self.jump_time = 0
-                        self.jump_cnt = 0
-                elif (self.slide_cnt == 1 or self.y < 150):
+                        self.jumpTime = 0
+                        self.jumpCnt = 0
+                elif (self.slideCnt == 1 or self.y < 150):
                     self.y = 120
-                elif(self.jump_time == 0 or self.slide_cnt == 0):
+                elif(self.jumpTime == 0 or self.slideCnt == 0):
                     self.y = 150
                 self.frame = (self.frame + 1) % 6
             else:
                 self.crushCnt -= 1
-                self.jump_time = 0
-                self.slide_cnt = 0
+                self.jumpTime = 0
+                self.slideCnt = 0
         elif(background.finish == 2):
             if(self.y > 150):
                 self.y -= 15
@@ -285,12 +285,12 @@ class Cookie:
                 if(self.crushCnt != 0):
                     self.crush.clip_draw(0, 0, 100, 150, self.x, self.y)
                 else:
-                    if(self.jump_time > 0):
-                        if(self.jumpnum == 1 or self.jumpnum == 3):
+                    if(self.jumpTime > 0):
+                        if(self.jumpNum == 1 or self.jumpNum == 3):
                             self.jump1.clip_draw(0, 0, 75, 100, self.x, self.y)
                         else:
                             self.jump2.clip_draw(0, 0, 75, 100, self.x, self.y)
-                    elif(self.slide_cnt == 1):
+                    elif(self.slideCnt == 1):
                         self.slide1.clip_draw(0, 0, 90, 65, self.x, self.y)
                     elif (background.HpCnt != 0):
                         self.die.clip_draw(0, 0, 150, 175, self.x, self.y - 10)
@@ -303,21 +303,21 @@ class Cookie:
                 if (self.crushCnt != 0):
                     self.crush.clip_draw(0, 0, 115, 125, self.x, self.y)
                 else:
-                    if (self.jump_time > 0):
-                        if (self.jumpnum == 0):
+                    if (self.jumpTime > 0):
+                        if (self.jumpNum == 0):
                              self.jump1.clip_draw(0, 0, 115, 125, self.x, self.y)
-                        elif(self.jumpnum == 1):
+                        elif(self.jumpNum == 1):
                             self.jump1.clip_draw(115, 0, 115, 125, self.x, self.y)
-                        elif (self.jumpnum == 2):
+                        elif (self.jumpNum == 2):
                             self.jump1.clip_draw(230, 0, 115, 125, self.x, self.y)
                         else:
                             self.jump1.clip_draw(345, 0, 115, 125, self.x, self.y)
-                    elif(self.slide_cnt > 0):
-                        if (self.slidenum == 0):
+                    elif(self.slideCnt > 0):
+                        if (self.slideNum == 0):
                             self.slide1.clip_draw(0, 0, 115, 125, self.x, self.y + 15)
-                        elif (self.slidenum == 1):
+                        elif (self.slideNum == 1):
                             self.slide1.clip_draw(115, 0, 115, 125, self.x, self.y + 15)
-                        elif (self.slidenum == 2):
+                        elif (self.slideNum == 2):
                             self.slide1.clip_draw(230, 0, 115, 125, self.x, self.y + 15)
                         else:
                             self.slide1.clip_draw(345, 0, 115, 125, self.x, self.y + 15)
@@ -329,17 +329,17 @@ class Cookie:
                 self.die.clip_draw(0, 0, 115, 125, self.x, self.y - 20)
 
     def jump(self):
-        if(self.jump_cnt < 2 and self.slide_cnt == 0):
+        if(self.jumpCnt < 2 and self.slideCnt == 0):
             self.height = 0
-            self.jump_cnt += 1
-            self.jump_time = 22
-            self.jumpnum = random.randint(0, 3)
+            self.jumpCnt += 1
+            self.jumpTime = 22
+            self.jumpNum = random.randint(0, 3)
 
 
     def slide(self):
-        if(self.slide_cnt == 0 and self.jump_cnt == 0):
-            self.slide_cnt = 1
-            self.slidenum = random.randint(0, 3)
+        if(self.slideCnt == 0 and self.jumpCnt == 0):
+            self.slideCnt = 1
+            self.slideNum = random.randint(0, 3)
 
 
 class Pet:
@@ -348,8 +348,8 @@ class Pet:
         self.frame = 0
         self.height = 0
         self.dir = 1
-        self.jump_time = 0
-        self.jump_cnt = 0
+        self.jumpTime = 0
+        self.jumpCnt = 0
         self.mypet = player_data[0]['Pet']
         self.shield = load_image('shield.png')
         self.shieldCnt = 0
@@ -366,20 +366,20 @@ class Pet:
 
     def update(self):
         if(background.finish == 0 and background.HpCnt == 0):
-            if (self.jump_time > 0 or self.y > 200):
-                if (self.jump_time < 11 and self.y > 200):
+            if (self.jumpTime > 0 or self.y > 200):
+                if (self.jumpTime < 11 and self.y > 200):
                     self.dir = -1
-                elif (self.jump_time == 11):
+                elif (self.jumpTime == 11):
                     self.height = 0
-                elif (self.jump_time > 11):
+                elif (self.jumpTime > 11):
                     self.dir = 1
                 self.height += 2
                 self.y += self.height * self.dir
-                self.jump_time -= 1
+                self.jumpTime -= 1
                 if (self.y <= 200):
                     self.y = 200
-                    self.jump_time = 0
-                    self.jump_cnt = 0
+                    self.jumpTime = 0
+                    self.jumpCnt = 0
             self.frame = (self.frame + 1) % 7
         if(background.HpCnt > 0):
             self.frame = (self.frame + 1) % 7
@@ -398,10 +398,10 @@ class Pet:
 
 
     def jump(self):
-        if(self.jump_cnt < 2):
+        if(self.jumpCnt < 2):
             self.height = 0
-            self.jump_cnt += 1
-            self.jump_time = 22
+            self.jumpCnt += 1
+            self.jumpTime = 22
 
 class Coin:
     def __init__(self):
@@ -652,8 +652,8 @@ def handle_events():
             elif event.key == SDLK_DOWN:
                 cookie.slide()
         elif event.type == SDL_KEYUP:
-            if cookie.slide_cnt == 1:
-                cookie.slide_cnt = 0
+            if cookie.slideCnt == 1:
+                cookie.slideCnt = 0
                 cookie.y = 150
         elif event.type == SDL_MOUSEMOTION:
             x, y = event.x, 600 - event.y
