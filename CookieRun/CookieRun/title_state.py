@@ -5,15 +5,22 @@ from pico2d import *
 
 name = "TitleState"
 image = None
+sound = None
 logo_time = 0.0
 
 def enter():
-    global image
+    global image, sound
     image = load_image('title.png')
 
+    sound = load_music('bgm_lobby.mp3')
+    sound.set_volume(32)
+    sound.play()
+
 def exit():
-    global image
+    global image, sound
+    sound.stop()
     del(image)
+    del(sound)
 
 def handle_events():
     events = get_events()

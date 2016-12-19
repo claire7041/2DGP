@@ -5,13 +5,17 @@ from pico2d import *
 
 name = "StartState"
 image = None
+sound = None
 logo_time = 0.0
 
 
 def enter():
-    global image
+    global image, sound
     open_canvas()
     image = load_image('kpu_credit.png')
+    sound = load_wav('ut_loading.wav')
+    sound.set_volume(64)
+    sound.play()
 
 
 def exit():

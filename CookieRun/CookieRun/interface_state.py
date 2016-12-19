@@ -17,6 +17,10 @@ rank = None
 
 class Ranking:
     def __init__(self):
+        self.bgm = load_music('interface_bgm.mp3')
+        self.bgm.set_volume(64)
+        self.bgm.repeat_play()
+
         self.x, self.y = 580, 550
         self.x2, self.y2 = 350, 480
         self.coin = ranking_data[0]['Coin']
@@ -174,7 +178,13 @@ def sum(data):
             data[i]['Coin'] += data[j]['Coin']
 
 def enter():
-    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank, ranking_data, player_data
+    global soundmotion, sound, soundchose, image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank, ranking_data, player_data
+    sound = load_wav('ui_1.wav')
+    sound.set_volume(64)
+    soundmotion = load_wav('ui_2.wav')
+    soundmotion.set_volume(32)
+    soundchose = load_wav('ui_3.wav')
+    soundchose.set_volume(64)
     f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
     f.close()
@@ -197,7 +207,10 @@ def enter():
     rank = Ranking()
 
 def exit():
-    global image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank
+    global  soundmotion, sound, soundchose,image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank
+    del(soundmotion)
+    del(sound)
+    del(soundchose)
     del(charChoice)
     del(petChoice)
     del(image)
@@ -209,7 +222,7 @@ def exit():
 
 
 def handle_events():
-    global x, y, click, choose, player_data
+    global soundmotion, sound, soundchose, x, y, click, choose, player_data
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -222,10 +235,13 @@ def handle_events():
                 #if(event.type,  event.key) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
                 if click == 0:
                     if (x >= 620 and x <= 750 and y >= 250 and y <= 300):  # 캐릭터 선택
+                        soundmotion.play()
                         choose = 2
                     elif (x >= 630 and x <= 740 and y >= 180 and y <= 230):  # 펫 선택
+                        soundmotion.play()
                         choose = 3
                     elif (x >= 500 and x <= 760 and y >= 60 and y <= 140):  # 게임시작
+                        soundmotion.play()
                         choose = 1
                     else:
                         choose = 0
@@ -245,9 +261,12 @@ def handle_events():
                 if click == 0:
                     if(x >= 620 and x <= 750 and y >= 250 and y <= 300):        # 캐릭터 선택
                         click = 1
+                        soundchose.play()
                     elif(x >= 630 and x <= 740 and y >= 180 and y <= 230):      # 펫 선택
                         click = 2
+                        soundchose.play()
                     elif(x >= 500 and x <= 760 and y >= 60 and y <= 140):       # 게임시작
+                        soundchose.play()
                         player_data = [
                             {"Cookie": cookie.frame, "Pet": pet.frame, "Hp": cookie.Hp, "Speed": pet.speed}
                         ]
@@ -259,9 +278,11 @@ def handle_events():
                         game_framework.change_state(main_state)
                 else:
                     if(x >= 750 and x <= 780 and y >= 450 and y <= 480):        # 선택창 나가기
+                        sound.play()
                         cookie.choice, pet.choice = 0, 0
                         click = 0
                     elif(x >= 300 and x <= 460 and y >= 170 and y <= 220):      # 캐릭터 바꾸기 (프레임 1, 2, 3)
+                        sound.play()
                         if click == 1:
                             cookie.frame = 0
                             cookie.Hp = 650
@@ -269,6 +290,7 @@ def handle_events():
                             pet.frame = 0
                             pet.speed = 15
                     elif(x > 460 and x <= 620 and y >= 170 and y <= 220):
+                        sound.play()
                         if click == 1:
                             cookie.frame = 1
                             cookie.Hp = 700
@@ -276,6 +298,7 @@ def handle_events():
                             pet.frame = 1
                             pet.speed = 10
                     elif (x > 620 and x <= 780 and y >= 170 and y <= 220):
+                        sound.play()
                         if click == 1:
                             cookie.frame = 2
                             cookie.Hp = 700

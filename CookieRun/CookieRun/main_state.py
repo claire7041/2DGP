@@ -12,11 +12,25 @@ name = "MainState"
 cookie = None
 background = None
 pet = None
+coin = None
+jelly = None
+obs = None
+input = None
 item = None
 font = None
 
 class Background:
     def __init__(self):
+        self.bgm = load_music('bgm_main_rockstar.mp3')
+        self.bgm.set_volume(64)
+        self.bgm.repeat_play()
+        self.reviveSound = load_wav('r_unlock.wav')
+        self.reviveSound.set_volume(128)
+        self.dieSound = load_wav('die_sound.wav')
+        self.dieSound.set_volume(128)
+        self.rank = load_wav('r_medal.wav')
+        self.rank.set_volume(128)
+        self.soundCnt = 0
         self.x, self.y = 400, 300
         self.hpBar = player_data[0]['Hp']
         self.hpF = player_data[0]['Hp']
@@ -61,15 +75,24 @@ class Background:
                 self.speed = 1
                 self.HpCnt = 50
                 pet.frame = 0
+                self.reviveSound.play(2)
             else:
+                if (self.soundCnt == 0):
+                    self.dieSound.play(1)
+                    self.soundCnt += 1
                 self.finish = 2
         elif(self.hpF == 650 and self.hpBar < 15 and self.HpCnt == 0):
             if (self.revive == 1 and player_data[0]['Pet'] == 2):
                 self.revive -= 1
+                self.reviveSound.play(2)
                 self.speed = 1
                 self.HpCnt = 50
                 pet.frame = 0
             else:
+                if (self.soundCnt == 0):
+                    self.dieSound.play(1)
+                    self.soundCnt += 1
+                    print("%d", self.finish)
                 self.finish = 2
         if(self.finish != 2 and self.HpCnt == 0):
             self.road += 10
@@ -87,6 +110,9 @@ class Background:
             if(self.finish == 2):
                 self.finishCnt += 1
                 if(self.finishCnt > 20):
+                    if (self.soundCnt == 1):
+                        self.rank.play(1)
+                        self.soundCnt += 1
                     self.finish = 1
         elif(self.HpCnt > 0):
             self.HpCnt -= 1
@@ -233,18 +259,42 @@ class Cookie:
             self.slide1 = load_image('cookie_run_slide.png')
             self.die = load_image('cookie_die.png')
             self.crush = load_image('cookie_crush.png')
+            self.JumpSound1 = load_wav('ch03jump.wav')
+            self.JumpSound1.set_volume(128)
+            self.JumpSound2 = load_wav('ch06jump.wav')
+            self.JumpSound2.set_volume(128)
+            self.SlideSound1 = load_wav('ch03slide.wav')
+            self.SlideSound1.set_volume(128)
+            self.SlideSound2 = load_wav('ch01slide.wav')
+            self.SlideSound2.set_volume(128)
         elif (self.mychar == 1):
             self.image = load_image('pink_run.png')
             self.jump1 = load_image('pink_jump.png')
             self.slide1 = load_image('pink_slide.png')
             self.die = load_image('pink_die.png')
             self.crush = load_image('pink_crush.png')
+            self.JumpSound1 = load_wav('ch24jump_woman.wav')
+            self.JumpSound1.set_volume(128)
+            self.JumpSound2 = load_wav('ch24jump.wav')
+            self.JumpSound2.set_volume(128)
+            self.SlideSound1 = load_wav('ch24slide.wav')
+            self.SlideSound1.set_volume(128)
+            self.SlideSound2 = load_wav('ch24slide_woman.wav')
+            self.SlideSound2.set_volume(128)
         elif(self.mychar == 2):
             self.image = load_image('moon_run.png')
             self.jump1 = load_image('moon_jump.png')
             self.slide1 = load_image('moon_slide.png')
             self.die = load_image('moon_die.png')
             self.crush = load_image('moon_crush.png')
+            self.JumpSound1 = load_wav('ch18jump.wav')
+            self.JumpSound1.set_volume(128)
+            self.JumpSound2 = load_wav('ch20jump.wav')
+            self.JumpSound2.set_volume(128)
+            self.SlideSound1 = load_wav('ch20slide.wav')
+            self.SlideSound1.set_volume(128)
+            self.SlideSound2 = load_wav('ch18slide.wav')
+            self.SlideSound2.set_volume(128)
 
 
     def update(self):
@@ -334,12 +384,20 @@ class Cookie:
             self.jumpCnt += 1
             self.jumpTime = 22
             self.jumpNum = random.randint(0, 3)
+            if(self.jumpNum <= 1 ):
+                self.JumpSound1.play(1)
+            else:
+                self.JumpSound2.play(1)
 
 
     def slide(self):
         if(self.slideCnt == 0 and self.jumpCnt == 0):
             self.slideCnt = 1
             self.slideNum = random.randint(0, 3)
+            if(self.slideNum <= 1):
+                self.SlideSound2.play(1)
+            else:
+                self.SlideSound1.play(1)
 
 
 class Pet:
@@ -405,6 +463,8 @@ class Pet:
 
 class Coin:
     def __init__(self):
+        self.coinsound = load_wav('g_coin.wav')
+        self.coinsound.set_volume(64)
         self.pos = []
         self.cnt = 0
         #for i in range(1000):
@@ -439,6 +499,15 @@ class Coin:
                 self.pos.append((300 + (i * 50), 190, True, 0))
             elif(i >= 54 and i <= 59):
                 self.pos.append((300 + (i * 50), 220, True, 0))
+            elif (i >= 69 and i <= 75):
+                if (i == 71 or i == 73):
+                    self.pos.append((300 + (i * 50), 250, True, 0))
+                elif (i == 70 or i == 74):
+                    self.pos.append((300 + (i * 50), 230, True, 0))
+                elif (i == 72):
+                    self.pos.append((300 + (i * 50), 280, False, 1))
+                else:
+                    self.pos.append((300 + (i * 50), 190, True, 0))
             else:
                 self.pos.append((300 + (i * 50), 150, False, 0))
 
@@ -453,6 +522,7 @@ class Coin:
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
                if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 50) <= self.pos[i][1] and (cookie.y + 75) >= self.pos[i][1] and self.pos[i][2] == True):
                    if(self.pos[i][2] == True):
+                       self.coinsound.play(1)
                        self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                        self.cnt += 1
 
@@ -463,6 +533,12 @@ class Coin:
 
 class Jelly:
     def __init__(self):
+        self.jellysound = load_wav('g_jelly.wav')
+        self.jellysound.set_volume(64)
+        self.ijellysound = load_wav('g_ijelly.wav')
+        self.ijellysound.set_volume(64)
+        self.itemsound = load_wav('i_large_energy.wav')
+        self.itemsound.set_volume(64)
         self.pos = []
         self.cnt = 0
         #for i in range(1000):
@@ -479,6 +555,8 @@ class Jelly:
                 self.pos.append((300 + (i * 50), 280, True, 1))
             elif (i == 24):
                 self.pos.append((300 + (i * 50), 280, True, 1))
+            elif (i == 72):
+                self.pos.append((300 + (i * 50), 280, True, 1))
             elif (i >= 6 and i <= 12 and i != 9):
                 self.pos.append((300 + (i * 50), 150, False, 0))
             elif(i >= 21 and i <= 27 and i != 24):
@@ -486,6 +564,8 @@ class Jelly:
             elif(i >= 33 and i <= 37):
                 self.pos.append((300 + (i * 50), 150, False, 0))
             elif(i >= 54 and i <= 59):
+                self.pos.append((300 + (i * 50), 150, False, 0))
+            elif (i >= 69 and i <= 75):
                 self.pos.append((300 + (i * 50), 150, False, 0))
             else:
                 self.pos.append((300 + (i * 50), 150, True, 0))
@@ -504,11 +584,16 @@ class Jelly:
                    if(self.pos[i][3] == 1):
                        background.hpBar += 50
                        background.HpTime -= 50
+                       self.itemsound.play(1)
+
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                    if (background.hpBar > 400):
                        self.cnt += 1
+                       self.jellysound.play(1)
                    else:
                        self.cnt += 2
+                       self.ijellysound.play(1)
+
 
     def draw(self):
         for i in range(1000):
@@ -524,6 +609,14 @@ class Jelly:
 
 class Obstacle:
     def __init__(self):
+        self.shieldSound = load_wav('shield_sound.wav')
+        self.shieldSound.set_volume(128)
+        self.obSound1 = load_wav('g_obs1.wav')
+        self.obSound1.set_volume(128)
+        self.obSound2 = load_wav('g_obs2.wav')
+        self.obSound2.set_volume(128)
+        self.obSound3 = load_wav('g_obs3.wav')
+        self.obSound3.set_volume(128)
         self.go = 0
         self.change = 1
         self.change2 = 0
@@ -561,20 +654,28 @@ class Obstacle:
                         self.change = 1
                     elif(obstacle['y'] < 112):
                         self.change = 0
-                if (obstacle['Type'] == 2):
+                if(obstacle['Type'] == 2):
                     if (self.change2 == 1):
-                        obstacle['y'] -= 5
+                        obstacle['y'] -= 1
                     else:
-                        obstacle['y'] += 5
+                        obstacle['y'] += 1
                     if (obstacle['y'] == 360):
                         self.change2 = 1
-                    elif (obstacle['y'] == 340):
+                    elif (obstacle['y'] == 350):
                         self.change2 = 0
-                if (obstacle['x'] - self.go >= 100 and obstacle['x'] - self.go <= 195 and (cookie.y - 30) <= obstacle['y'] and (cookie.y + 200) >= obstacle['y'] and obstacle['Crash'] == True):
+                if (obstacle['x'] - self.go >= 100 and obstacle['x'] - self.go <= 195 and (cookie.y - 80) <= obstacle['y'] and (cookie.y + 200) >= obstacle['y'] and obstacle['Crash'] == True):
                     obstacle['Crash'] = False
                     if(pet.shieldCnt != 0):
+                        self.shieldSound.play(1)
                         pet.shieldCnt = 0
                     else:
+                        if(cookie.mychar == 0):
+                            self.obSound1.play(1)
+                        elif (cookie.mychar == 1):
+                            self.obSound3.play(1)
+                        elif (cookie.mychar == 2):
+                            self.obSound2.play(1)
+
                         background.x += 30
                         background.hpBar -= 50
                         background.HpTime += 50
@@ -718,7 +819,6 @@ def handle_events():
                         input.myname.append((9))
                     elif (y >= 225 and y < 275):
                         input.myname.append((4))
-                print("%d" % input.myname[input.cnt])
                 input.cnt += 1
             if (background.result == 1):
                 f = open('ranking_data.txt', 'r')
@@ -758,7 +858,5 @@ def draw():
         cookie.draw()
     else:
         input.draw()
-
-
 
     update_canvas()
