@@ -539,8 +539,19 @@ class Jelly:
         self.ijellysound.set_volume(64)
         self.itemsound = load_wav('i_large_energy.wav')
         self.itemsound.set_volume(64)
+        if(cookie.mychar == 1):
+            self.bgm = load_music('bgm_fever2.mp3')
+            self.bgm.set_volume(128)
+        elif(cookie.mychar == 2):
+            self.bgm = load_music('bgm_fever3.mp3')
+            self.bgm.set_volume(128)
         self.pos = []
         self.cnt = 0
+        self.moonItem = load_image('moon_item.png')
+        self.pinkItem = load_image('pink_item.png')
+        self.randPos = []
+        for i in range(100):
+            self.randPos.append((random.randint(0,1200), random.randint(50,500), True, 1))
         #for i in range(1000):
         #    for obstacle in obstacle_data:
         #        if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
@@ -577,6 +588,23 @@ class Jelly:
     def update(self):
        if(background.finish == 0  and background.HpCnt == 0):
            self.go += 10
+
+           if(self.go >= 1300 and self.go <= 1305):
+               if (cookie.mychar == 1 or cookie.mychar == 2):
+                   self.bgm.repeat_play()
+
+           if (self.go == 2000):
+                background.bgm.repeat_play()
+
+           if (self.go >= 1300 and self.go <= 2000 and cookie.mychar != 0):
+               for i in range(100):
+                   if (self.randPos[i][2] == True):
+                       self.randPos[i] = (self.randPos[i][0], self.randPos[i][1], True, self.randPos[i][3])
+                       if (self.randPos[i][0] - self.go + 1300 >= 100 and self.randPos[i][0] - self.go + 1300 <= 195 and (cookie.y - 50) <= self.randPos[i][1] and (cookie.y + 75) >= self.randPos[i][1] and self.randPos[i][2] == True):
+                           self.randPos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
+                           self.cnt += 1
+                           self.ijellysound.play(1)
+
            for i in range(1000):
                if(self.pos[i][2] == True):
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, self.pos[i][3])
@@ -594,7 +622,6 @@ class Jelly:
                        self.cnt += 2
                        self.ijellysound.play(1)
 
-
     def draw(self):
         for i in range(1000):
             if(self.pos[i][2] == True):
@@ -605,6 +632,14 @@ class Jelly:
                         self.image2.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
                     else:
                         self.image.clip_draw(0, 0, 30, 35, self.pos[i][0] - self.go, self.pos[i][1])
+
+        if (self.go >= 1300 and self.go <= 2000):
+            for i in range(100):
+                if (self.randPos[i][2] == True):
+                    if(cookie.mychar == 1):
+                        self.pinkItem.clip_draw(0, 0, 44, 39, self.randPos[i][0] - self.go + 1300, self.randPos[i][1])
+                    elif(cookie.mychar == 2):
+                        self.moonItem.clip_draw(0, 0, 59, 67, self.randPos[i][0] - self.go + 1300, self.randPos[i][1])
 
 
 class Obstacle:
