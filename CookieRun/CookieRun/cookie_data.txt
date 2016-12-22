@@ -1,1 +1,1 @@
-[{"Pet": 0, "Speed": 15, "Cookie": 0, "Hp": 650}]
+[{"Cookie": 2, "Speed": 20, "Hp": 700, "Pet": 1}]
