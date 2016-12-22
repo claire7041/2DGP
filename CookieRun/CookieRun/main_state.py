@@ -32,8 +32,8 @@ class Background:
         self.rank.set_volume(128)
         self.soundCnt = 0
         self.x, self.y = 400, 300
-        self.hpBar = player_data[0]['Hp']
-        self.hpF = player_data[0]['Hp']
+        self.hpBar = playerData[0]['Hp']
+        self.hpF = playerData[0]['Hp']
         self.revive = 1
         self.hpC = 52
         self.HpTime = 0
@@ -42,7 +42,7 @@ class Background:
         self.finish = 0
         self.finishCnt = 0
         self.result = 0
-        self.goSpeed = player_data[0]['Speed']
+        self.goSpeed = playerData[0]['Speed']
         self.speed = 3
         self.scoreFrame1 = 0
         self.scoreFrame2 = 0
@@ -66,11 +66,11 @@ class Background:
         self.Number = load_image('resource/image/number.png')
         self.scoreNumber = load_image('resource/image/Scorenumber.png')
         self.ResultNumber = load_image('resource/image/resultnumber.png')
-        self.mycoin = load_image('resource/image/coin2.png')
+        self.myCoin = load_image('resource/image/coin2.png')
 
     def update(self):
         if(self.hpF == 700 and self.hpBar < 50 and self.HpCnt == 0):
-            if(self.revive == 1 and player_data[0]['Pet'] == 2):
+            if(self.revive == 1 and playerData[0]['Pet'] == 2):
                 self.revive -= 1
                 self.speed = 1
                 self.HpCnt = 50
@@ -82,7 +82,7 @@ class Background:
                     self.soundCnt += 1
                 self.finish = 2
         elif(self.hpF == 650 and self.hpBar < 15 and self.HpCnt == 0):
-            if (self.revive == 1 and player_data[0]['Pet'] == 2):
+            if (self.revive == 1 and playerData[0]['Pet'] == 2):
                 self.revive -= 1
                 self.reviveSound.play(2)
                 self.speed = 1
@@ -210,14 +210,14 @@ class Background:
                 self.ResultNumber.clip_draw(self.scoreFrame3 * 40, 0, 40, 70, 380, 343)
                 self.ResultNumber.clip_draw(self.scoreFrame4 * 40, 0, 40, 70, 360, 343)
 
-        self.mycoin.clip_draw(0, 0, 50, 50, 665, 575)
+        self.myCoin.clip_draw(0, 0, 50, 50, 665, 575)
 
 class Input:
     def __init__(self):
-        self.inputkey = load_image('resource/image/input.png')
+        self.inputKey = load_image('resource/image/input.png')
         self.name = load_image('resource/image/English.png')
         self.cnt = 0
-        self.myname = []
+        self.myName = []
         self.x, self.y = 150, 150
 
     def update(self):
@@ -226,17 +226,17 @@ class Input:
 
     def draw(self):
         if(background.finish == 1):
-            self.inputkey.clip_draw(0, 0, 250, 250, self.x, self.y)
+            self.inputKey.clip_draw(0, 0, 250, 250, self.x, self.y)
 
             if(self.cnt == 1):
-                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 640, 163)
+                self.name.clip_draw(self.myName[0] * 50, 0, 50, 50, 640, 163)
             elif(self.cnt == 2):
-                self.name.clip_draw(self.myname[1] * 50, 0, 50, 50, 640, 163)
-                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 610, 163)
+                self.name.clip_draw(self.myName[1] * 50, 0, 50, 50, 640, 163)
+                self.name.clip_draw(self.myName[0] * 50, 0, 50, 50, 610, 163)
             elif(self.cnt == 3):
-                self.name.clip_draw(self.myname[2] * 50, 0, 50, 50, 640, 163)
-                self.name.clip_draw(self.myname[1] * 50, 0, 50, 50, 610, 163)
-                self.name.clip_draw(self.myname[0] * 50, 0, 50, 50, 580, 163)
+                self.name.clip_draw(self.myName[2] * 50, 0, 50, 50, 640, 163)
+                self.name.clip_draw(self.myName[1] * 50, 0, 50, 50, 610, 163)
+                self.name.clip_draw(self.myName[0] * 50, 0, 50, 50, 580, 163)
 
 
 class Cookie:
@@ -251,8 +251,8 @@ class Cookie:
         self.jumpCnt = 0
         self.slideNum = 0
         self.slideCnt = 0
-        self.mychar = player_data[0]['Cookie']
-        if (self.mychar == 0):
+        self.myChar = playerData[0]['Cookie']
+        if (self.myChar == 0):
             self.image = load_image('resource/image/cookie_run.png')
             self.jump1 = load_image('resource/image/cookie_run_jump.png')
             self.jump2 = load_image('resource/image/cookie_run_jump2.png')
@@ -267,7 +267,7 @@ class Cookie:
             self.SlideSound1.set_volume(128)
             self.SlideSound2 = load_wav('resource/sound/ch01slide.wav')
             self.SlideSound2.set_volume(128)
-        elif (self.mychar == 1):
+        elif (self.myChar == 1):
             self.image = load_image('resource/image/pink_run.png')
             self.jump1 = load_image('resource/image/pink_jump.png')
             self.slide1 = load_image('resource/image/pink_slide.png')
@@ -281,7 +281,7 @@ class Cookie:
             self.SlideSound1.set_volume(128)
             self.SlideSound2 = load_wav('resource/sound/ch24slide_woman.wav')
             self.SlideSound2.set_volume(128)
-        elif(self.mychar == 2):
+        elif(self.myChar == 2):
             self.image = load_image('resource/image/moon_run.png')
             self.jump1 = load_image('resource/image/moon_jump.png')
             self.slide1 = load_image('resource/image/moon_slide.png')
@@ -330,7 +330,7 @@ class Cookie:
 
 
     def draw(self):
-        if (self.mychar == 0):
+        if (self.myChar == 0):
             if(background.finish == 0):
                 if(self.crushCnt != 0):
                     self.crush.clip_draw(0, 0, 100, 150, self.x, self.y)
@@ -408,17 +408,17 @@ class Pet:
         self.dir = 1
         self.jumpTime = 0
         self.jumpCnt = 0
-        self.mypet = player_data[0]['Pet']
+        self.myPet = playerData[0]['Pet']
         self.shield = load_image('resource/image/shield.png')
         self.shieldCnt = 0
 
-        if (self.mypet == 0):
+        if (self.myPet == 0):
             self.image = load_image('resource/image/flower.png')
-        elif (self.mypet == 1):
+        elif (self.myPet == 1):
             self.image = load_image('resource/image/ghost.png')
             self.skillimage = load_image('resource/image/ghost_skill.png')
             self.shieldCnt = 1
-        elif (self.mypet == 2):
+        elif (self.myPet == 2):
             self.image = load_image('resource/image/star.png')
             self.skillimage = load_image('resource/image/star_skill.png')
 
@@ -449,9 +449,9 @@ class Pet:
         else:
             if (self.shieldCnt != 0):
                 self.shield.clip_draw(0, 0, 150, 150, cookie.x, cookie.y)
-            if (self.mypet == 0):
+            if (self.myPet == 0):
                 self.image.clip_draw(self.frame * 70, 0, 70, 100, self.x, self.y)
-            elif (self.mypet == 1 or self.mypet == 2):
+            elif (self.myPet == 1 or self.myPet == 2):
                 self.image.clip_draw(self.frame * 72, 0, 72, 100, self.x, self.y)
 
 
@@ -463,12 +463,12 @@ class Pet:
 
 class Coin:
     def __init__(self):
-        self.coinsound = load_wav('resource/sound/g_coin.wav')
-        self.coinsound.set_volume(64)
+        self.coinSound = load_wav('resource/sound/g_coin.wav')
+        self.coinSound.set_volume(64)
         self.pos = []
         self.cnt = 0
         #for i in range(1000):
-        #    for obstacle in obstacle_data:
+        #    for obstacle in obstacleData:
         #        if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
         #            if(obstacle['y'] < 300):
         #                self.pos.append((300 + (i * 50), obstacle['y'] + 100, True, 0))
@@ -522,7 +522,7 @@ class Coin:
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], True, (self.pos[i][3] + 1) % 6)
                if (self.pos[i][0] - self.go >= 100 and self.pos[i][0] - self.go <= 195 and (cookie.y - 50) <= self.pos[i][1] and (cookie.y + 75) >= self.pos[i][1] and self.pos[i][2] == True):
                    if(self.pos[i][2] == True):
-                       self.coinsound.play(1)
+                       self.coinSound.play(1)
                        self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                        self.cnt += 1
 
@@ -533,16 +533,16 @@ class Coin:
 
 class Jelly:
     def __init__(self):
-        self.jellysound = load_wav('resource/sound/g_jelly.wav')
-        self.jellysound.set_volume(64)
-        self.ijellysound = load_wav('resource/sound/g_ijelly.wav')
-        self.ijellysound.set_volume(64)
-        self.itemsound = load_wav('resource/sound/i_large_energy.wav')
-        self.itemsound.set_volume(64)
-        if(cookie.mychar == 1):
+        self.jellySound = load_wav('resource/sound/g_jelly.wav')
+        self.jellySound.set_volume(64)
+        self.ijellySound = load_wav('resource/sound/g_ijelly.wav')
+        self.ijellySound.set_volume(64)
+        self.itemSound = load_wav('resource/sound/i_large_energy.wav')
+        self.itemSound.set_volume(64)
+        if(cookie.myChar == 1):
             self.bgm = load_music('resource/sound/bgm_fever2.mp3')
             self.bgm.set_volume(128)
-        elif(cookie.mychar == 2):
+        elif(cookie.myChar == 2):
             self.bgm = load_music('resource/sound/bgm_fever3.mp3')
             self.bgm.set_volume(128)
         self.pos = []
@@ -553,7 +553,7 @@ class Jelly:
         for i in range(100):
             self.randPos.append((random.randint(0,1200), random.randint(50,500), True, 1))
         #for i in range(1000):
-        #    for obstacle in obstacle_data:
+        #    for obstacle in obstacleData:
         #        if(300 + (i * 50) >= obstacle['x'] and 300 + (i * 50) <= obstacle['x'] + obstacle['Size_x']):
         #            if(obstacle['y'] < 300):
         #                self.pos.append((300 + (i * 50), obstacle['y'] + 100, False, 0))
@@ -590,20 +590,20 @@ class Jelly:
            self.go += 10
 
            if(self.go >= 1300 and self.go <= 1305):
-               if (cookie.mychar == 1 or cookie.mychar == 2):
+               if (cookie.myChar == 1 or cookie.myChar == 2):
                    self.bgm.repeat_play()
 
            if (self.go == 2000):
                 background.bgm.repeat_play()
 
-           if (self.go >= 1300 and self.go <= 2000 and cookie.mychar != 0):
+           if (self.go >= 1300 and self.go <= 2000 and cookie.myChar != 0):
                for i in range(100):
                    if (self.randPos[i][2] == True):
                        self.randPos[i] = (self.randPos[i][0], self.randPos[i][1], True, self.randPos[i][3])
                        if (self.randPos[i][0] - self.go + 1300 >= 100 and self.randPos[i][0] - self.go + 1300 <= 195 and (cookie.y - 50) <= self.randPos[i][1] and (cookie.y + 75) >= self.randPos[i][1] and self.randPos[i][2] == True):
                            self.randPos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                            self.cnt += 1
-                           self.ijellysound.play(1)
+                           self.ijellySound.play(1)
 
            for i in range(1000):
                if(self.pos[i][2] == True):
@@ -612,15 +612,15 @@ class Jelly:
                    if(self.pos[i][3] == 1):
                        background.hpBar += 50
                        background.HpTime -= 50
-                       self.itemsound.play(1)
+                       self.itemSound.play(1)
 
                    self.pos[i] = (self.pos[i][0], self.pos[i][1], False, self.pos[i][3])
                    if (background.hpBar > 400):
                        self.cnt += 1
-                       self.jellysound.play(1)
+                       self.jellySound.play(1)
                    else:
                        self.cnt += 2
-                       self.ijellysound.play(1)
+                       self.ijellySound.play(1)
 
     def draw(self):
         for i in range(1000):
@@ -636,9 +636,9 @@ class Jelly:
         if (self.go >= 1300 and self.go <= 2000):
             for i in range(100):
                 if (self.randPos[i][2] == True):
-                    if(cookie.mychar == 1):
+                    if(cookie.myChar == 1):
                         self.pinkItem.clip_draw(0, 0, 44, 39, self.randPos[i][0] - self.go + 1300, self.randPos[i][1])
-                    elif(cookie.mychar == 2):
+                    elif(cookie.myChar == 2):
                         self.moonItem.clip_draw(0, 0, 59, 67, self.randPos[i][0] - self.go + 1300, self.randPos[i][1])
 
 
@@ -655,7 +655,7 @@ class Obstacle:
         self.go = 0
         self.change = 1
         self.change2 = 0
-        for obstacle in obstacle_data:
+        for obstacle in obstacleData:
             if (obstacle['Type'] == 1):
                 self.imageOb1 = load_image('resource/image/ob1_Fork.png')
             elif (obstacle['Type'] == 2):
@@ -679,7 +679,7 @@ class Obstacle:
     def update(self):
         if(background.finish == 0  and background.HpCnt == 0):
             self.go += 10
-            for obstacle in obstacle_data:
+            for obstacle in obstacleData:
                 if(obstacle['Type'] == 9):
                     if(self.change == 1):
                         obstacle['y'] -= 1
@@ -704,11 +704,11 @@ class Obstacle:
                         self.shieldSound.play(1)
                         pet.shieldCnt = 0
                     else:
-                        if(cookie.mychar == 0):
+                        if(cookie.myChar == 0):
                             self.obSound1.play(1)
-                        elif (cookie.mychar == 1):
+                        elif (cookie.myChar == 1):
                             self.obSound3.play(1)
-                        elif (cookie.mychar == 2):
+                        elif (cookie.myChar == 2):
                             self.obSound2.play(1)
 
                         background.x += 30
@@ -716,7 +716,7 @@ class Obstacle:
                         background.HpTime += 50
                         cookie.crushCnt = 10
     def draw(self):
-        for obstacle in obstacle_data:
+        for obstacle in obstacleData:
             if(obstacle['Type'] == 1):
                 self.imageOb1.clip_draw(0, 0, obstacle['Size_x'], obstacle['Size_y'], obstacle['x'] - self.go, obstacle['y'])
             elif (obstacle['Type'] == 2):
@@ -738,12 +738,12 @@ class Obstacle:
 
 
 def enter():
-    global cookie, background, pet, coin, jelly, obs, player_data, obstacle_data, input
+    global cookie, background, pet, coin, jelly, obs, playerData, obstacleData, input
     f = open('cookie_data.txt', 'r')
-    player_data = json.load(f)
+    playerData = json.load(f)
     f.close()
     f = open('obstacle_data.txt', 'r')
-    obstacle_data = json.load(f)
+    obstacleData = json.load(f)
     f.close()
     background = Background()
     cookie = Cookie()
@@ -755,13 +755,15 @@ def enter():
 
 
 def exit():
-    global cookie, background, pet, coin, obs, jelly, input
+    global cookie, background, pet, coin, jelly, obs, playerData, obstacleData, input
     del(cookie)
     del(background)
     del(pet)
     del(coin)
     del(jelly)
     del(obs)
+    del(playerData)
+    del(obstacleData)
     del(input)
 
 
@@ -801,66 +803,66 @@ def handle_events():
             if(background.finish == 1 and input.x <= x and x <= input.x + 250 and y >= input.y and y <= input.y + 250 and input.cnt < 3):
                 if(x >= 25 and x < 75):
                     if (y >= 25 and y < 75):
-                        input.myname.append((20))
+                        input.myName.append((20))
                     elif (y >= 75 and y < 125):
-                        input.myname.append((15))
+                        input.myName.append((15))
                     elif (y >= 125 and y < 175):
-                        input.myname.append((10))
+                        input.myName.append((10))
                     elif (y >= 175 and y < 225):
-                        input.myname.append((5))
+                        input.myName.append((5))
                     elif (y >= 225 and y < 275):
-                        input.myname.append((0))
+                        input.myName.append((0))
                 elif(x >= 75 and x < 125):
                     if (y >= 25 and y < 75):
-                        input.myname.append((21))
+                        input.myName.append((21))
                     elif (y >= 75 and y < 125):
-                        input.myname.append((16))
+                        input.myName.append((16))
                     elif (y >= 125 and y < 175):
-                        input.myname.append((11))
+                        input.myName.append((11))
                     elif (y >= 175 and y < 225):
-                        input.myname.append((6))
+                        input.myName.append((6))
                     elif (y >= 225 and y < 275):
-                        input.myname.append((1))
+                        input.myName.append((1))
                 elif(x >= 125 and x < 175):
                     if (y >= 25 and y < 75):
-                        input.myname.append((22))
+                        input.myName.append((22))
                     elif (y >= 75 and y < 125):
-                        input.myname.append((17))
+                        input.myName.append((17))
                     elif (y >= 125 and y < 175):
-                        input.myname.append((12))
+                        input.myName.append((12))
                     elif (y >= 175 and y < 225):
-                        input.myname.append((7))
+                        input.myName.append((7))
                     elif (y >= 225 and y < 275):
-                        input.myname.append((2))
+                        input.myName.append((2))
                 elif(x >= 175 and x < 225):
                     if (y >= 25 and y < 75):
-                        input.myname.append((23))
+                        input.myName.append((23))
                     elif (y >= 75 and y < 125):
-                        input.myname.append((18))
+                        input.myName.append((18))
                     elif (y >= 125 and y < 175):
-                        input.myname.append((13))
+                        input.myName.append((13))
                     elif (y >= 175 and y < 225):
-                        input.myname.append((8))
+                        input.myName.append((8))
                     elif (y >= 225 and y < 275):
-                        input.myname.append((3))
+                        input.myName.append((3))
                 elif (x >= 225 and x < 275):
                     if (y >= 25 and y < 75):
-                        input.myname.append((24))
+                        input.myName.append((24))
                     elif (y >= 75 and y < 125):
-                        input.myname.append((19))
+                        input.myName.append((19))
                     elif (y >= 125 and y < 175):
-                        input.myname.append((14))
+                        input.myName.append((14))
                     elif (y >= 175 and y < 225):
-                        input.myname.append((9))
+                        input.myName.append((9))
                     elif (y >= 225 and y < 275):
-                        input.myname.append((4))
+                        input.myName.append((4))
                 input.cnt += 1
             if (background.result == 1):
                 f = open('ranking_data.txt', 'r')
                 ranking_data = json.load(f)
                 f.close()
 
-                ranking_data.append({"Coin": coin.cnt, "Score": jelly.cnt, "Name1": input.myname[0], "Name2": input.myname[1], "Name3": input.myname[2]})
+                ranking_data.append({"Coin": coin.cnt, "Score": jelly.cnt, "Name1": input.myName[0], "Name2": input.myName[1], "Name3": input.myName[2]})
 
                 f = open('ranking_data.txt', 'w')
                 json.dump(ranking_data, f)

@@ -6,9 +6,9 @@ from pico2d import *
 name = "InterfaceState"
 
 image = None
-imagestart = None
-imagecookie = None
-imagepet = None
+imageStart = None
+imageCookie = None
+imagePet = None
 cookie = None
 pet = None
 charChoice = None
@@ -23,23 +23,23 @@ class Ranking:
 
         self.x, self.y = 580, 550
         self.x2, self.y2 = 350, 480
-        self.coin = ranking_data[0]['Coin']
+        self.coin = rankingData[0]['Coin']
         self.score = []
-        self.myname1 = []
-        self.myname2 = []
-        self.myname3 = []
-        self.myname1.append((ranking_data[0]['Name1']))
-        self.myname1.append((ranking_data[0]['Name2']))
-        self.myname1.append((ranking_data[0]['Name3']))
-        self.myname2.append((ranking_data[1]['Name1']))
-        self.myname2.append((ranking_data[1]['Name2']))
-        self.myname2.append((ranking_data[1]['Name3']))
-        self.myname3.append((ranking_data[2]['Name1']))
-        self.myname3.append((ranking_data[2]['Name2']))
-        self.myname3.append((ranking_data[2]['Name3']))
+        self.myName1 = []
+        self.myName2 = []
+        self.myName3 = []
+        self.myName1.append((rankingData[0]['Name1']))
+        self.myName1.append((rankingData[0]['Name2']))
+        self.myName1.append((rankingData[0]['Name3']))
+        self.myName2.append((rankingData[1]['Name1']))
+        self.myName2.append((rankingData[1]['Name2']))
+        self.myName2.append((rankingData[1]['Name3']))
+        self.myName3.append((rankingData[2]['Name1']))
+        self.myName3.append((rankingData[2]['Name2']))
+        self.myName3.append((rankingData[2]['Name3']))
 
         for i in range(3):
-            self.score.append((ranking_data[i]['Score']))
+            self.score.append((rankingData[i]['Score']))
 
         self.frame1 = 0
         self.frame2 = 0
@@ -93,11 +93,11 @@ class Ranking:
             self.Number.clip_draw(self.frame4 * 40, 0, 40, 100, self.x + 60, self.y)
 
         for i in range(3):
-            self.name.clip_draw(self.myname1[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 + 10)
+            self.name.clip_draw(self.myName1[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 + 10)
         for i in range(3):
-            self.name.clip_draw(self.myname2[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 35)
+            self.name.clip_draw(self.myName2[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 35)
         for i in range(3):
-            self.name.clip_draw(self.myname3[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 80)
+            self.name.clip_draw(self.myName3[i] * 50, 0, 50, 50, self.x2 - (170 - (i * 30)), self.y2 - 80)
 
         for i in range(3):
             if (self.score[i] < 10):
@@ -120,7 +120,7 @@ class PetChoice:
     def __init__(self):
         self.x, self.y = 110, 280
         self.choice = 0
-        self.frame = player_data[0]['Pet']
+        self.frame = playerData[0]['Pet']
         self.speed = 15
         self.image = load_image('resource/image/mypetChoice.png')
         self.blue = load_image('resource/image/choose.png')
@@ -145,8 +145,8 @@ class CookieChoice:
     def __init__(self):
         self.x, self.y = 210, 180
         self.choice = 0
-        self.frame = player_data[0]['Cookie']
-        self.Hp = player_data[0]['Hp']
+        self.frame = playerData[0]['Cookie']
+        self.Hp = playerData[0]['Hp']
         self.image = load_image('resource/image/cookieChoice.png')
         self.blue = load_image('resource/image/choose.png')
         self.exit = load_image('resource/image/exit.png')
@@ -178,51 +178,51 @@ def sum(data):
             data[i]['Coin'] += data[j]['Coin']
 
 def enter():
-    global soundmotion, sound, soundchose, image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank, ranking_data, player_data
+    global soundMotion, sound, soundChose, image, cookie, pet, charChoice, petChoice, imagePet, imageCookie, imageStart, rank, rankingData, playerData
     sound = load_wav('resource/sound/ui_1.wav')
     sound.set_volume(64)
-    soundmotion = load_wav('resource/sound/ui_2.wav')
-    soundmotion.set_volume(32)
-    soundchose = load_wav('resource/sound/ui_3.wav')
-    soundchose.set_volume(64)
+    soundMotion = load_wav('resource/sound/ui_2.wav')
+    soundMotion.set_volume(32)
+    soundChose = load_wav('resource/sound/ui_3.wav')
+    soundChose.set_volume(64)
     f = open('cookie_data.txt', 'r')
-    player_data = json.load(f)
+    playerData = json.load(f)
     f.close()
 
     f = open('ranking_data.txt', 'r')
-    ranking_data = json.load(f)
+    rankingData = json.load(f)
     f.close()
 
-    bubble_sort(ranking_data)
-    sum(ranking_data)
+    bubble_sort(rankingData)
+    sum(rankingData)
 
     charChoice = load_image('resource/image/charChoice.png')
     petChoice = load_image('resource/image/petChoice.png')
     image = load_image('resource/image/Interface.png')
-    imagestart = load_image('resource/image/Interface_start.png')
-    imagecookie = load_image('resource/image/Interface_cookie.png')
-    imagepet = load_image('resource/image/Interface_pet.png')
+    imageStart = load_image('resource/image/Interface_start.png')
+    imageCookie = load_image('resource/image/Interface_cookie.png')
+    imagePet = load_image('resource/image/Interface_pet.png')
     cookie = CookieChoice()
     pet = PetChoice()
     rank = Ranking()
 
 def exit():
-    global  soundmotion, sound, soundchose,image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank
-    del(soundmotion)
+    global  soundMotion, sound, soundChose,image, cookie, pet, charChoice, petChoice, imagePet, imageCookie, imageStart, rank
+    del(soundMotion)
     del(sound)
-    del(soundchose)
+    del(soundChose)
     del(charChoice)
     del(petChoice)
     del(image)
     del(cookie)
-    del(imagepet)
-    del (imagecookie)
-    del (imagestart)
+    del(imagePet)
+    del (imageCookie)
+    del (imageStart)
     del (rank)
 
 
 def handle_events():
-    global soundmotion, sound, soundchose, x, y, click, choose, player_data
+    global soundMotion, sound, soundChose, x, y, click, choose, playerData
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -235,13 +235,13 @@ def handle_events():
                 #if(event.type,  event.key) == (SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT):
                 if click == 0:
                     if (x >= 620 and x <= 750 and y >= 250 and y <= 300):  # 캐릭터 선택
-                        soundmotion.play()
+                        soundMotion.play()
                         choose = 2
                     elif (x >= 630 and x <= 740 and y >= 180 and y <= 230):  # 펫 선택
-                        soundmotion.play()
+                        soundMotion.play()
                         choose = 3
                     elif (x >= 500 and x <= 760 and y >= 60 and y <= 140):  # 게임시작
-                        soundmotion.play()
+                        soundMotion.play()
                         choose = 1
                     else:
                         choose = 0
@@ -261,18 +261,18 @@ def handle_events():
                 if click == 0:
                     if(x >= 620 and x <= 750 and y >= 250 and y <= 300):        # 캐릭터 선택
                         click = 1
-                        soundchose.play()
+                        soundChose.play()
                     elif(x >= 630 and x <= 740 and y >= 180 and y <= 230):      # 펫 선택
                         click = 2
-                        soundchose.play()
+                        soundChose.play()
                     elif(x >= 500 and x <= 760 and y >= 60 and y <= 140):       # 게임시작
-                        soundchose.play()
-                        player_data = [
+                        soundChose.play()
+                        playerData = [
                             {"Cookie": cookie.frame, "Pet": pet.frame, "Hp": cookie.Hp, "Speed": pet.speed}
                         ]
 
                         f = open('cookie_data.txt', 'w')
-                        json.dump(player_data, f)
+                        json.dump(playerData, f)
                         f.close()
 
                         game_framework.change_state(main_state)
@@ -315,11 +315,11 @@ def draw():
     if(choose == 0):
         image.draw(400, 300)
     elif(choose == 1):
-        imagestart.draw(400, 300)
+        imageStart.draw(400, 300)
     elif (choose == 2):
-        imagecookie.draw(400, 300)
+        imageCookie.draw(400, 300)
     elif (choose == 3):
-        imagepet.draw(400, 300)
+        imagePet.draw(400, 300)
     rank.draw()
 
     if (click == 1):
