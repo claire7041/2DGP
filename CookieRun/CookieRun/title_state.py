@@ -10,9 +10,9 @@ logo_time = 0.0
 
 def enter():
     global image, sound
-    image = load_image('title.png')
+    image = load_image('resource/image/title.png')
 
-    sound = load_music('bgm_lobby.mp3')
+    sound = load_music('resource/sound/bgm_lobby.mp3')
     sound.set_volume(32)
     sound.play()
 

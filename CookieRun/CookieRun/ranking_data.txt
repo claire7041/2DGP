@@ -1,1 +1,1 @@
-[{"Coin": 0, "Name1": 26, "Score": 0, "Name2": 26, "Name3": 26}, {"Coin": 0, "Name1": 26, "Score": 0, "Name2": 26, "Name3": 26}, {"Coin": 0, "Name1": 26, "Score": 0, "Name2": 26, "Name3": 26}]
+[{"Coin": 0, "Name3": 26, "Name1": 26, "Score": 0, "Name2": 26}, {"Coin": 0, "Name3": 26, "Name1": 26, "Score": 0, "Name2": 26}, {"Coin": 0, "Name3": 26, "Name1": 26, "Score": 0, "Name2": 26}]

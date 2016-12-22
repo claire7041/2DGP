@@ -21,14 +21,14 @@ font = None
 
 class Background:
     def __init__(self):
-        self.bgm = load_music('bgm_main_rockstar.mp3')
+        self.bgm = load_music('resource/sound/bgm_main_rockstar.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()
-        self.reviveSound = load_wav('r_unlock.wav')
+        self.reviveSound = load_wav('resource/sound/r_unlock.wav')
         self.reviveSound.set_volume(128)
-        self.dieSound = load_wav('die_sound.wav')
+        self.dieSound = load_wav('resource/sound/die_sound.wav')
         self.dieSound.set_volume(128)
-        self.rank = load_wav('r_medal.wav')
+        self.rank = load_wav('resource/sound/r_medal.wav')
         self.rank.set_volume(128)
         self.soundCnt = 0
         self.x, self.y = 400, 300
@@ -52,21 +52,21 @@ class Background:
         self.numFrame2 = 0
         self.numFrame3 = 0
         self.numFrame4 = 0
-        self.image = load_image('First_Background.png')
-        self.image2 = load_image('First_Background2.png')
-        self.image3 = load_image('First_ground.png')
-        self.imageHp = load_image('cookie_Hp.png')
-        self.imageHpB = load_image('cookie_HpBack.png')
-        self.imageHp2 = load_image('cookie_Hpend.png')
-        self.imageHp3 = load_image('cookie_HpStart.png')
-        self.imageResult = load_image('result.png')
-        self.imageResult2 = load_image('resultChoose.png')
-        self.imageRecord = load_image('record.png')
-        self.Bonus = load_image('BonusTime.png')
-        self.Number = load_image('number.png')
-        self.scoreNumber = load_image('Scorenumber.png')
-        self.ResultNumber = load_image('resultnumber.png')
-        self.mycoin = load_image('coin2.png')
+        self.image = load_image('resource/image/First_Background.png')
+        self.image2 = load_image('resource/image/First_Background2.png')
+        self.image3 = load_image('resource/image/First_ground.png')
+        self.imageHp = load_image('resource/image/cookie_Hp.png')
+        self.imageHpB = load_image('resource/image/cookie_HpBack.png')
+        self.imageHp2 = load_image('resource/image/cookie_Hpend.png')
+        self.imageHp3 = load_image('resource/image/cookie_HpStart.png')
+        self.imageResult = load_image('resource/image/result.png')
+        self.imageResult2 = load_image('resource/image/resultChoose.png')
+        self.imageRecord = load_image('resource/image/record.png')
+        self.Bonus = load_image('resource/image/BonusTime.png')
+        self.Number = load_image('resource/image/number.png')
+        self.scoreNumber = load_image('resource/image/Scorenumber.png')
+        self.ResultNumber = load_image('resource/image/resultnumber.png')
+        self.mycoin = load_image('resource/image/coin2.png')
 
     def update(self):
         if(self.hpF == 700 and self.hpBar < 50 and self.HpCnt == 0):
@@ -214,8 +214,8 @@ class Background:
 
 class Input:
     def __init__(self):
-        self.inputkey = load_image('input.png')
-        self.name = load_image('English.png')
+        self.inputkey = load_image('resource/image/input.png')
+        self.name = load_image('resource/image/English.png')
         self.cnt = 0
         self.myname = []
         self.x, self.y = 150, 150
@@ -253,47 +253,47 @@ class Cookie:
         self.slideCnt = 0
         self.mychar = player_data[0]['Cookie']
         if (self.mychar == 0):
-            self.image = load_image('cookie_run.png')
-            self.jump1 = load_image('cookie_run_jump.png')
-            self.jump2 = load_image('cookie_run_jump2.png')
-            self.slide1 = load_image('cookie_run_slide.png')
-            self.die = load_image('cookie_die.png')
-            self.crush = load_image('cookie_crush.png')
-            self.JumpSound1 = load_wav('ch03jump.wav')
+            self.image = load_image('resource/image/cookie_run.png')
+            self.jump1 = load_image('resource/image/cookie_run_jump.png')
+            self.jump2 = load_image('resource/image/cookie_run_jump2.png')
+            self.slide1 = load_image('resource/image/cookie_run_slide.png')
+            self.die = load_image('resource/image/cookie_die.png')
+            self.crush = load_image('resource/image/cookie_crush.png')
+            self.JumpSound1 = load_wav('resource/sound/ch03jump.wav')
             self.JumpSound1.set_volume(128)
-            self.JumpSound2 = load_wav('ch06jump.wav')
+            self.JumpSound2 = load_wav('resource/sound/ch06jump.wav')
             self.JumpSound2.set_volume(128)
-            self.SlideSound1 = load_wav('ch03slide.wav')
+            self.SlideSound1 = load_wav('resource/sound/ch03slide.wav')
             self.SlideSound1.set_volume(128)
-            self.SlideSound2 = load_wav('ch01slide.wav')
+            self.SlideSound2 = load_wav('resource/sound/ch01slide.wav')
             self.SlideSound2.set_volume(128)
         elif (self.mychar == 1):
-            self.image = load_image('pink_run.png')
-            self.jump1 = load_image('pink_jump.png')
-            self.slide1 = load_image('pink_slide.png')
-            self.die = load_image('pink_die.png')
-            self.crush = load_image('pink_crush.png')
-            self.JumpSound1 = load_wav('ch24jump_woman.wav')
+            self.image = load_image('resource/image/pink_run.png')
+            self.jump1 = load_image('resource/image/pink_jump.png')
+            self.slide1 = load_image('resource/image/pink_slide.png')
+            self.die = load_image('resource/image/pink_die.png')
+            self.crush = load_image('resource/image/pink_crush.png')
+            self.JumpSound1 = load_wav('resource/sound/ch24jump_woman.wav')
             self.JumpSound1.set_volume(128)
-            self.JumpSound2 = load_wav('ch24jump.wav')
+            self.JumpSound2 = load_wav('resource/sound/ch24jump.wav')
             self.JumpSound2.set_volume(128)
-            self.SlideSound1 = load_wav('ch24slide.wav')
+            self.SlideSound1 = load_wav('resource/sound/ch24slide.wav')
             self.SlideSound1.set_volume(128)
-            self.SlideSound2 = load_wav('ch24slide_woman.wav')
+            self.SlideSound2 = load_wav('resource/sound/ch24slide_woman.wav')
             self.SlideSound2.set_volume(128)
         elif(self.mychar == 2):
-            self.image = load_image('moon_run.png')
-            self.jump1 = load_image('moon_jump.png')
-            self.slide1 = load_image('moon_slide.png')
-            self.die = load_image('moon_die.png')
-            self.crush = load_image('moon_crush.png')
-            self.JumpSound1 = load_wav('ch18jump.wav')
+            self.image = load_image('resource/image/moon_run.png')
+            self.jump1 = load_image('resource/image/moon_jump.png')
+            self.slide1 = load_image('resource/image/moon_slide.png')
+            self.die = load_image('resource/image/moon_die.png')
+            self.crush = load_image('resource/image/moon_crush.png')
+            self.JumpSound1 = load_wav('resource/sound/ch18jump.wav')
             self.JumpSound1.set_volume(128)
-            self.JumpSound2 = load_wav('ch20jump.wav')
+            self.JumpSound2 = load_wav('resource/sound/ch20jump.wav')
             self.JumpSound2.set_volume(128)
-            self.SlideSound1 = load_wav('ch20slide.wav')
+            self.SlideSound1 = load_wav('resource/sound/ch20slide.wav')
             self.SlideSound1.set_volume(128)
-            self.SlideSound2 = load_wav('ch18slide.wav')
+            self.SlideSound2 = load_wav('resource/sound/ch18slide.wav')
             self.SlideSound2.set_volume(128)
 
 
@@ -409,18 +409,18 @@ class Pet:
         self.jumpTime = 0
         self.jumpCnt = 0
         self.mypet = player_data[0]['Pet']
-        self.shield = load_image('shield.png')
+        self.shield = load_image('resource/image/shield.png')
         self.shieldCnt = 0
 
         if (self.mypet == 0):
-            self.image = load_image('flower.png')
+            self.image = load_image('resource/image/flower.png')
         elif (self.mypet == 1):
-            self.image = load_image('ghost.png')
-            self.skillimage = load_image('ghost_skill.png')
+            self.image = load_image('resource/image/ghost.png')
+            self.skillimage = load_image('resource/image/ghost_skill.png')
             self.shieldCnt = 1
         elif (self.mypet == 2):
-            self.image = load_image('star.png')
-            self.skillimage = load_image('star_skill.png')
+            self.image = load_image('resource/image/star.png')
+            self.skillimage = load_image('resource/image/star_skill.png')
 
     def update(self):
         if(background.finish == 0 and background.HpCnt == 0):
@@ -463,7 +463,7 @@ class Pet:
 
 class Coin:
     def __init__(self):
-        self.coinsound = load_wav('g_coin.wav')
+        self.coinsound = load_wav('resource/sound/g_coin.wav')
         self.coinsound.set_volume(64)
         self.pos = []
         self.cnt = 0
@@ -512,7 +512,7 @@ class Coin:
                 self.pos.append((300 + (i * 50), 150, False, 0))
 
         self.go = 0
-        self.image = load_image('coin.png')
+        self.image = load_image('resource/image/coin.png')
 
     def update(self):
        if(background.finish == 0  and background.HpCnt == 0):
@@ -533,22 +533,22 @@ class Coin:
 
 class Jelly:
     def __init__(self):
-        self.jellysound = load_wav('g_jelly.wav')
+        self.jellysound = load_wav('resource/sound/g_jelly.wav')
         self.jellysound.set_volume(64)
-        self.ijellysound = load_wav('g_ijelly.wav')
+        self.ijellysound = load_wav('resource/sound/g_ijelly.wav')
         self.ijellysound.set_volume(64)
-        self.itemsound = load_wav('i_large_energy.wav')
+        self.itemsound = load_wav('resource/sound/i_large_energy.wav')
         self.itemsound.set_volume(64)
         if(cookie.mychar == 1):
-            self.bgm = load_music('bgm_fever2.mp3')
+            self.bgm = load_music('resource/sound/bgm_fever2.mp3')
             self.bgm.set_volume(128)
         elif(cookie.mychar == 2):
-            self.bgm = load_music('bgm_fever3.mp3')
+            self.bgm = load_music('resource/sound/bgm_fever3.mp3')
             self.bgm.set_volume(128)
         self.pos = []
         self.cnt = 0
-        self.moonItem = load_image('moon_item.png')
-        self.pinkItem = load_image('pink_item.png')
+        self.moonItem = load_image('resource/image/moon_item.png')
+        self.pinkItem = load_image('resource/image/pink_item.png')
         self.randPos = []
         for i in range(100):
             self.randPos.append((random.randint(0,1200), random.randint(50,500), True, 1))
@@ -581,9 +581,9 @@ class Jelly:
             else:
                 self.pos.append((300 + (i * 50), 150, True, 0))
         self.go = 0
-        self.image = load_image('Jelly.png')
-        self.image2 = load_image('Jelly2.png')
-        self.heart = load_image('heart.png')
+        self.image = load_image('resource/image/Jelly.png')
+        self.image2 = load_image('resource/image/Jelly2.png')
+        self.heart = load_image('resource/image/heart.png')
 
     def update(self):
        if(background.finish == 0  and background.HpCnt == 0):
@@ -644,36 +644,36 @@ class Jelly:
 
 class Obstacle:
     def __init__(self):
-        self.shieldSound = load_wav('shield_sound.wav')
+        self.shieldSound = load_wav('resource/sound/shield_sound.wav')
         self.shieldSound.set_volume(128)
-        self.obSound1 = load_wav('g_obs1.wav')
+        self.obSound1 = load_wav('resource/sound/g_obs1.wav')
         self.obSound1.set_volume(128)
-        self.obSound2 = load_wav('g_obs2.wav')
+        self.obSound2 = load_wav('resource/sound/g_obs2.wav')
         self.obSound2.set_volume(128)
-        self.obSound3 = load_wav('g_obs3.wav')
+        self.obSound3 = load_wav('resource/sound/g_obs3.wav')
         self.obSound3.set_volume(128)
         self.go = 0
         self.change = 1
         self.change2 = 0
         for obstacle in obstacle_data:
             if (obstacle['Type'] == 1):
-                self.imageOb1 = load_image('ob1_Fork.png')
+                self.imageOb1 = load_image('resource/image/ob1_Fork.png')
             elif (obstacle['Type'] == 2):
-                self.imageOb2 = load_image('ob2_Fork.png')
+                self.imageOb2 = load_image('resource/image/ob2_Fork.png')
             elif (obstacle['Type'] == 3):
-                self.imageOb3 = load_image('ob3_Fork.png')
+                self.imageOb3 = load_image('resource/image/ob3_Fork.png')
             elif (obstacle['Type'] == 4):
-                self.imageOb4 = load_image('ob4_thorn.png')
+                self.imageOb4 = load_image('resource/image/ob4_thorn.png')
             elif (obstacle['Type'] == 5):
-                self.imageOb5 = load_image('ob5_thorn.png')
+                self.imageOb5 = load_image('resource/image/ob5_thorn.png')
             elif (obstacle['Type'] == 6):
-                self.imageOb6 = load_image('ob6_thorn.png')
+                self.imageOb6 = load_image('resource/image/ob6_thorn.png')
             elif (obstacle['Type'] == 7):
-                self.imageOb7 = load_image('ob7_thorn.png')
+                self.imageOb7 = load_image('resource/image/ob7_thorn.png')
             elif (obstacle['Type'] == 8):
-                self.imageOb8 = load_image('ob8_thorn.png')
+                self.imageOb8 = load_image('resource/image/ob8_thorn.png')
             elif (obstacle['Type'] == 9):
-                self.imageOb9 = load_image('ob9_thorn.png')
+                self.imageOb9 = load_image('resource/image/ob9_thorn.png')
 
 
     def update(self):

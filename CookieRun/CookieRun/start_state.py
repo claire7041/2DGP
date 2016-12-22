@@ -12,8 +12,8 @@ logo_time = 0.0
 def enter():
     global image, sound
     open_canvas()
-    image = load_image('kpu_credit.png')
-    sound = load_wav('ut_loading.wav')
+    image = load_image('resource/image/kpu_credit.png')
+    sound = load_wav('resource/sound/ut_loading.wav')
     sound.set_volume(64)
     sound.play()
 

@@ -17,7 +17,7 @@ rank = None
 
 class Ranking:
     def __init__(self):
-        self.bgm = load_music('interface_bgm.mp3')
+        self.bgm = load_music('resource/sound/interface_bgm.mp3')
         self.bgm.set_volume(64)
         self.bgm.repeat_play()
 
@@ -48,11 +48,11 @@ class Ranking:
         self.scoreFrame = []
         for i in range(12):
             self.scoreFrame.append((0))
-        self.srank = load_image('scoreRank.png')
-        self.image = load_image('myCoin.png')
-        self.Number = load_image('number.png')
-        self.ResultNumber = load_image('resultnumber.png')
-        self.name = load_image('English.png')
+        self.srank = load_image('resource/image/scoreRank.png')
+        self.image = load_image('resource/image/myCoin.png')
+        self.Number = load_image('resource/image/number.png')
+        self.ResultNumber = load_image('resource/image/resultnumber.png')
+        self.name = load_image('resource/image/English.png')
 
     def update(self):
         self.frame1 = self.coin % 10
@@ -122,9 +122,9 @@ class PetChoice:
         self.choice = 0
         self.frame = player_data[0]['Pet']
         self.speed = 15
-        self.image = load_image('mypetChoice.png')
-        self.blue = load_image('choose.png')
-        self.exit = load_image('exit.png')
+        self.image = load_image('resource/image/mypetChoice.png')
+        self.blue = load_image('resource/image/choose.png')
+        self.exit = load_image('resource/image/exit.png')
 
     def update(self):
         pass
@@ -147,9 +147,9 @@ class CookieChoice:
         self.choice = 0
         self.frame = player_data[0]['Cookie']
         self.Hp = player_data[0]['Hp']
-        self.image = load_image('cookieChoice.png')
-        self.blue = load_image('choose.png')
-        self.exit = load_image('exit.png')
+        self.image = load_image('resource/image/cookieChoice.png')
+        self.blue = load_image('resource/image/choose.png')
+        self.exit = load_image('resource/image/exit.png')
 
     def update(self):
         pass
@@ -179,11 +179,11 @@ def sum(data):
 
 def enter():
     global soundmotion, sound, soundchose, image, cookie, pet, charChoice, petChoice, imagepet, imagecookie, imagestart, rank, ranking_data, player_data
-    sound = load_wav('ui_1.wav')
+    sound = load_wav('resource/sound/ui_1.wav')
     sound.set_volume(64)
-    soundmotion = load_wav('ui_2.wav')
+    soundmotion = load_wav('resource/sound/ui_2.wav')
     soundmotion.set_volume(32)
-    soundchose = load_wav('ui_3.wav')
+    soundchose = load_wav('resource/sound/ui_3.wav')
     soundchose.set_volume(64)
     f = open('cookie_data.txt', 'r')
     player_data = json.load(f)
@@ -196,12 +196,12 @@ def enter():
     bubble_sort(ranking_data)
     sum(ranking_data)
 
-    charChoice = load_image('charChoice.png')
-    petChoice = load_image('petChoice.png')
-    image = load_image('Interface.png')
-    imagestart = load_image('Interface_start.png')
-    imagecookie = load_image('Interface_cookie.png')
-    imagepet = load_image('Interface_pet.png')
+    charChoice = load_image('resource/image/charChoice.png')
+    petChoice = load_image('resource/image/petChoice.png')
+    image = load_image('resource/image/Interface.png')
+    imagestart = load_image('resource/image/Interface_start.png')
+    imagecookie = load_image('resource/image/Interface_cookie.png')
+    imagepet = load_image('resource/image/Interface_pet.png')
     cookie = CookieChoice()
     pet = PetChoice()
     rank = Ranking()
